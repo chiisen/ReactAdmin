@@ -3,13 +3,19 @@ React Admin
 
 參考: [React-Admin Tutorial](https://marmelab.com/react-admin/Tutorial.html)
 
-# 安裝
-React-admin 建立在 React 之上。首先，我們將使用 create-react-admin 來引導一個新的 Web 應用程式(test-admin)：
+# 建立專案
 ```bash
-npm create react-admin@latest test-admin -- --interactive
+npx create-vite@latest my-admin -- --template react
 ```
-執行以下命令：
+
+# 執行
 ```bash
-cd test-admin
+cd my-admin
+npm install
 npm run dev
+```
+
+# 瀏覽
+```bash
+http://localhost:5173/
 ```
