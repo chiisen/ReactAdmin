@@ -2,8 +2,8 @@ version: "2" # 因 Ubuntu 16.04.2 系統上的 docker-compose 1.8.0 僅支援 ve
 services:
   react-admin:
     build:
-      context: ./my-admin
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: my-admin/Dockerfile
     ports:
       - "3006:80" # 映射主機的3006端口到容器的80端口，外部訪問使用3006
     restart: unless-stopped
