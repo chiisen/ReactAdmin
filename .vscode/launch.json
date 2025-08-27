@@ -1,0 +1,12 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "啟動 Edge 並附加除錯",
+      "type": "msedge",
+      "request": "launch",
+      "url": "http://localhost:5173", // Vite 預設 port，若用 CRA 請改成 3000
+      "webRoot": "${workspaceFolder}/my-admin/src"
+    }
+  ]
+}

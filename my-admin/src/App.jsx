@@ -2,12 +2,25 @@ import { useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
+import { Admin, Resource } from 'react-admin';
+import fakeDataProvider from 'ra-data-fakerest';
+import PostList from './PostList';
+
+const dataProvider = fakeDataProvider({
+  posts: [
+    { id: 1, title: 'Hello', body: 'World' },
+    { id: 2, title: 'Foo', body: 'Bar' },
+  ],
+});
 
 function App() {
   const [count, setCount] = useState(0)
 
   return (
     <>
+      <Admin dataProvider={dataProvider}>
+        <Resource name="posts" list={PostList} />
+      </Admin>
       <div>
         <a href="https://vite.dev" target="_blank">
           <img src={viteLogo} className="logo" alt="Vite logo" />

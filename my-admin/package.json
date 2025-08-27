@@ -10,7 +10,9 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "ra-data-fakerest": "^5.10.2",
     "react": "^19.1.1",
+    "react-admin": "^5.10.2",
     "react-dom": "^19.1.1"
   },
   "devDependencies": {

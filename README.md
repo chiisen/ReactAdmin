@@ -1,22 +1,10 @@
-# ReactAdmin
-React Admin
+# React Admin
+React Admin  操作紀錄
 
 參考: [React-Admin Tutorial](https://marmelab.com/react-admin/Tutorial.html)
 
-# 建立專案
-參考: [Installing React-admin With Vite](https://marmelab.com/react-admin/Vite.html)
-```bash
-npx create-vite@latest my-admin -- --template react
-```
+# Create React Project
+[建立 React 專案](./docs/CreateReactProject.md)  
 
-# 執行
-```bash
-cd my-admin
-npm install
-npm run dev
-```
-
-# 瀏覽
-```bash
-http://localhost:5173/
-```
+# Demo
+[React Admin 使用 PostList 的 Demo 操作說明](./docs/PostList.md)  
