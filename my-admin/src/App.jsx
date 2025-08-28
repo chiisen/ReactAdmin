@@ -3,7 +3,7 @@ import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
 import { Admin, Resource } from 'react-admin';
-import fakeDataProvider from 'ra-data-fakerest';
+
 import PostList from './Post/PostList';
 import PostEdit from './Post/PostEdit';
 import PostCreate from './Post/PostCreate';
@@ -14,28 +14,14 @@ import SettingVersionCreate from './SettingVersion/SettingVersionCreate';
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 
-const dataProvider = fakeDataProvider({
-  posts: [
-    { id: 1, title: 'Hello', body: 'World' },
-    { id: 2, title: 'Foo', body: 'Bar' },
-  ],
-  settingVersion: [
-    { data_type: 'getI18nText', updated_at: '2025-08-26 17:32:58', version: '1.0.1' },
-    { data_type: 'getCategoryOptionsList', updated_at: '2025-08-26 17:32:58', version: '1.0.1' },
-  ],
-});
 
-
-const ApiProvider = {
-  posts: [
-    { id: 1, title: 'Hello', body: 'World' },
-    { id: 2, title: 'Foo', body: 'Bar' },
-  ],
-  settingVersion: async (resource, params) => {
-    const response = await fetch(`${API_BASE_URL}/getSettingVersion`, {
+// RESTful API dataProvider 實作
+const dataProvider = {
+  getList: async (resource, params) => {
+    const response = await fetch(`${API_BASE_URL}/${resource}/list`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ resource, ...params })
+      body: JSON.stringify(params)
     });
     const result = await response.json();
     return {
@@ -43,7 +29,50 @@ const ApiProvider = {
       total: result.total,
     };
   },
-  // 其他方法...
+  getOne: async (resource, params) => {
+    const response = await fetch(`${API_BASE_URL}/${resource}/get`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(params)
+    });
+    const result = await response.json();
+    return {
+      data: result.data,
+    };
+  },
+  create: async (resource, params) => {
+    const response = await fetch(`${API_BASE_URL}/${resource}/create`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(params.data)
+    });
+    const result = await response.json();
+    return {
+      data: result.data,
+    };
+  },
+  update: async (resource, params) => {
+    const response = await fetch(`${API_BASE_URL}/${resource}/update`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(params.data)
+    });
+    const result = await response.json();
+    return {
+      data: result.data,
+    };
+  },
+  delete: async (resource, params) => {
+    const response = await fetch(`${API_BASE_URL}/${resource}/delete`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(params)
+    });
+    const result = await response.json();
+    return {
+      data: result.data,
+    };
+  },
 };
 
 
