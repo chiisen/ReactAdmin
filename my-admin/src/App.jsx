@@ -4,9 +4,12 @@ import viteLogo from '/vite.svg'
 import './App.css'
 import { Admin, Resource } from 'react-admin';
 import fakeDataProvider from 'ra-data-fakerest';
-import PostList from './PostList';
-import SettingVersionList from './SettingVersionList';
-
+import PostList from './Post/PostList';
+import PostEdit from './Post/PostEdit';
+import PostCreate from './Post/PostCreate';
+import SettingVersionList from './SettingVersion/SettingVersionList';
+import SettingVersionEdit from './SettingVersion/SettingVersionEdit';
+import SettingVersionCreate from './SettingVersion/SettingVersionCreate';
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
@@ -23,14 +26,45 @@ const dataProvider = fakeDataProvider({
 });
 
 
+const ApiProvider = {
+  posts: [
+    { id: 1, title: 'Hello', body: 'World' },
+    { id: 2, title: 'Foo', body: 'Bar' },
+  ],
+  settingVersion: async (resource, params) => {
+    const response = await fetch(`${API_BASE_URL}/getSettingVersion`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ resource, ...params })
+    });
+    const result = await response.json();
+    return {
+      data: result.data,
+      total: result.total,
+    };
+  },
+  // 其他方法...
+};
+
+
 function App() {
   const [count, setCount] = useState(0)
 
   return (
     <>
       <Admin dataProvider={dataProvider}>
-        <Resource name="posts" list={PostList} />
-        <Resource name="settingVersion" list={SettingVersionList} />
+        <Resource
+          name="posts"
+          list={PostList}
+          edit={PostEdit}
+          create={PostCreate}
+        />
+        <Resource
+          name="settingVersion"
+          list={SettingVersionList}
+          edit={SettingVersionEdit}
+          create={SettingVersionCreate}
+        />
       </Admin>
 
 
