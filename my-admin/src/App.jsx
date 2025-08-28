@@ -5,13 +5,23 @@ import './App.css'
 import { Admin, Resource } from 'react-admin';
 import fakeDataProvider from 'ra-data-fakerest';
 import PostList from './PostList';
+import SettingVersionList from './SettingVersionList';
+
+
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
 
 const dataProvider = fakeDataProvider({
   posts: [
     { id: 1, title: 'Hello', body: 'World' },
     { id: 2, title: 'Foo', body: 'Bar' },
   ],
+  settingVersion: [
+    { data_type: 'getI18nText', updated_at: '2025-08-26 17:32:58', version: '1.0.1' },
+    { data_type: 'getCategoryOptionsList', updated_at: '2025-08-26 17:32:58', version: '1.0.1' },
+  ],
 });
+
 
 function App() {
   const [count, setCount] = useState(0)
@@ -20,7 +30,11 @@ function App() {
     <>
       <Admin dataProvider={dataProvider}>
         <Resource name="posts" list={PostList} />
+        <Resource name="settingVersion" list={SettingVersionList} />
       </Admin>
+
+
+
       <div>
         <a href="https://vite.dev" target="_blank">
           <img src={viteLogo} className="logo" alt="Vite logo" />

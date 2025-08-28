@@ -1,0 +1,14 @@
+import { List, DataTable } from 'react-admin';
+
+const SettingVersionList = () => (
+    <List resource="settingVersion">
+        <DataTable>
+            <DataTable.Col source="data_type" />
+            <DataTable.Col source="updated_at" />
+            <DataTable.Col source="version" />
+        </DataTable>
+    </List>
+);
+
+export default SettingVersionList;
+
