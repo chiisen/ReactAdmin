@@ -20,5 +20,17 @@ Docker production（Nginx）：http://localhost:3006（對應容器內 80）
 如果你要在 Docker 裡直接跑 Vite 開發伺服器，容器端口要設 5173；但目前 Dockerfile 是 production build，Nginx 只用 80 埠。
 
 # 注意事項
+## getList
 在 React Admin 中，[getList](./my-admin/src/App.jsx) API 回傳的每個資料物件都必須有一個唯一的 id 欄位。
 如果你的 API 沒有 id 欄位，可以在 dataProvider 內部做資料轉換，把 API 的主鍵欄位（例如 uuid、_id、key 等）映射成 id。
+
+## API 都是用 POST 方法呼叫
+App.jsx 中，所有 /list、/get、/create、/update、/delete API 都是用 POST 方法呼叫的，不是用 GET。
+雖然 RESTful 標準通常會用：
+
+- /list、/get：GET
+- /create：POST
+- /update：PUT 或 PATCH
+- /delete：DELETE
+但為了統一程式碼全部都用 POST，並且資料都放在 request body。
+這是後端 API 的設計決定，前端只要照這樣呼叫即可。
