@@ -73,6 +73,17 @@ const dataProvider = {
       data: result.data,
     };
   },
+  deleteMany: async (resource, params) => {
+    const response = await fetch(`${API_BASE_URL}/${resource}/deleteMany`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ ids: params.ids })
+    });
+    const result = await response.json();
+    return {
+      data: result.data,
+    };
+  },
 };
 
 
