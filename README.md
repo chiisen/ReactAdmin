@@ -37,5 +37,9 @@ App.jsx 中，所有 /list、/get、/create、/update、/delete API 都是用 PO
 
 ## 235
 目前 API 的 port 為 3005
+### .env
+```bash
+VITE_API_BASE_URL=http://192.168.1.235:3005
+```
 前端 port 為 3006
 
