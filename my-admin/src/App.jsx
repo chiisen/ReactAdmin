@@ -131,6 +131,12 @@ function App() {
     <>
       <div className="admin-wrapper">
         <Admin dataProvider={dataProvider}>
+          <Resource
+            name="settingVersion"
+            list={SettingVersionList}
+            edit={SettingVersionEdit}
+            create={SettingVersionCreate}
+          />
           {/*
           <Resource
             name="posts"
@@ -139,12 +145,6 @@ function App() {
             create={PostCreate}
           />
           */}
-          <Resource
-            name="settingVersion"
-            list={SettingVersionList}
-            edit={SettingVersionEdit}
-            create={SettingVersionCreate}
-          />
         </Admin>
       </div>
       {/*
