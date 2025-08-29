@@ -1,12 +1,16 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+// Vite + React 官網範例
+//import { useState } from 'react'
+//import reactLogo from './assets/react.svg'
+//import viteLogo from '/vite.svg'
+
 import './App.css'
 import { Admin, Resource } from 'react-admin';
 
-import PostList from './Post/PostList';
-import PostEdit from './Post/PostEdit';
-import PostCreate from './Post/PostCreate';
+// Post 範例
+//import PostList from './Post/PostList';
+//import PostEdit from './Post/PostEdit';
+//import PostCreate from './Post/PostCreate';
+
 import SettingVersionList from './SettingVersion/SettingVersionList';
 import SettingVersionEdit from './SettingVersion/SettingVersionEdit';
 import SettingVersionCreate from './SettingVersion/SettingVersionCreate';
@@ -121,18 +125,20 @@ const dataProvider = {
 
 
 function App() {
-  const [count, setCount] = useState(0)
+  //const [count, setCount] = useState(0)
 
   return (
     <>
       <div className="admin-wrapper">
         <Admin dataProvider={dataProvider}>
+          {/*
           <Resource
             name="posts"
             list={PostList}
             edit={PostEdit}
             create={PostCreate}
           />
+          */}
           <Resource
             name="settingVersion"
             list={SettingVersionList}
@@ -141,6 +147,7 @@ function App() {
           />
         </Admin>
       </div>
+      {/*
       <div className="info-section">
         <div>
           <a href="https://vite.dev" target="_blank">
@@ -163,6 +170,7 @@ function App() {
           Click on the Vite and React logos to learn more
         </p>
       </div>
+      */}
     </>
   )
 }
