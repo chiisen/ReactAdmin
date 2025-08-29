@@ -1,6 +1,7 @@
 FROM node:20-alpine AS build
 WORKDIR /app/my-admin
 COPY my-admin/ ./
+COPY my-admin/.env .env
 RUN npm install --production=false
 RUN npm run build
 
