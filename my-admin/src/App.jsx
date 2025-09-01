@@ -31,6 +31,11 @@ import CategoryGroupList from './CategoryGroup/CategoryGroupList';
 import CategoryGroupEdit from './CategoryGroup/CategoryGroupEdit';
 import CategoryGroupCreate from './CategoryGroup/CategoryGroupCreate';
 
+// 分類項目
+import CategoryOptionList from './CategoryOption/CategoryOptionList';
+import CategoryOptionEdit from './CategoryOption/CategoryOptionEdit';
+import CategoryOptionCreate from './CategoryOption/CategoryOptionCreate'
+
 import { ResourceMgr } from './ResourceMgr';
 
 
@@ -190,6 +195,12 @@ function App() {
             list={CategoryGroupList}
             edit={CategoryGroupEdit}
             create={CategoryGroupCreate}
+          />
+          <Resource
+            name={ResourceMgr.categoryOption}
+            list={CategoryOptionList}
+            edit={CategoryOptionEdit}
+            create={CategoryOptionCreate}
           />
           {/*
           <Resource
