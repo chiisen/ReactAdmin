@@ -1,7 +1,8 @@
 import { List, DataTable } from 'react-admin';
+import { ResourceMgr } from '../ResourceMgr';
 
 const SportItemList = () => (
-    <List resource="sportItem" title="運動類型">
+    <List resource={ResourceMgr.sportItem} title="運動類型">
         <DataTable>
             <DataTable.Col source="id" />
             <DataTable.Col source="name_key" />

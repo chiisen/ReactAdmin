@@ -19,6 +19,9 @@ import SportItemList from './SportItem/SportItemList';
 import SportItemEdit from './SportItem/SportItemEdit';
 import SportItemCreate from './SportItem/SportItemCreate';
 
+import { ResourceMgr } from './ResourceMgr';
+
+
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 
@@ -95,7 +98,7 @@ const dataProvider = {
         'Content-Type': 'application/json',
         'appName': 'ReactAdmin'
       },
-      body: JSON.stringify(params.data)
+      body: JSON.stringify(params)
     });
     if (!response.ok) {
       const text = await response.text();
@@ -153,19 +156,19 @@ function App() {
       <div className="admin-wrapper">
         <Admin dataProvider={dataProvider}>
           <Resource
-            name="settingVersion"
+            name={ResourceMgr.settingVersion}
             list={SettingVersionList}
             edit={SettingVersionEdit}
             create={SettingVersionCreate}
           />
           <Resource
-            name="sportItem"
+            name={ResourceMgr.sportItem}
             list={SportItemList}
             edit={SportItemEdit}
             create={SportItemCreate}
           />
           <Resource
-            name="posts"
+            name={ResourceMgr.posts}
             list={PostList}
             edit={PostEdit}
             create={PostCreate}
