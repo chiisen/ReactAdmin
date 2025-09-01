@@ -26,6 +26,11 @@ import SportCategoryList from './SportCategory/SportCategoryList';
 import SportCategoryEdit from './SportCategory/SportCategoryEdit'; // 因為雙 key 無法修改，所以不提供編輯功能，只能新增與刪除
 import SportCategoryCreate from './SportCategory/SportCategoryCreate';
 
+// 分類維度
+import CategoryGroupList from './CategoryGroup/CategoryGroupList';
+import CategoryGroupEdit from './CategoryGroup/CategoryGroupEdit';
+import CategoryGroupCreate from './CategoryGroup/CategoryGroupCreate';
+
 import { ResourceMgr } from './ResourceMgr';
 
 
@@ -181,11 +186,19 @@ function App() {
             create={SportCategoryCreate}
           />
           <Resource
+            name={ResourceMgr.categoryGroup}
+            list={CategoryGroupList}
+            edit={CategoryGroupEdit}
+            create={CategoryGroupCreate}
+          />
+          {/*
+          <Resource
             name={ResourceMgr.posts}
             list={PostList}
             edit={PostEdit}
             create={PostCreate}
           />
+          */}
         </Admin>
       </div>
       <div className="info-section">

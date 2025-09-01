@@ -10,4 +10,6 @@ export class ResourceMgr {
   static sportItem = "sportItem";
   /** sportCategory - 運動項目 */
   static sportCategory = "sportCategory";
+  /** categoryGroup - 分類維度 */
+  static categoryGroup = "categoryGroup";
 }
