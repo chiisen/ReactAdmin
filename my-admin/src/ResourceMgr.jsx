@@ -8,4 +8,6 @@ export class ResourceMgr {
   static settingVersion = "settingVersion";
   /** sportItem - 運動類型 */
   static sportItem = "sportItem";
+  /** sportCategory - 運動項目 */
+  static sportCategory = "sportCategory";
 }

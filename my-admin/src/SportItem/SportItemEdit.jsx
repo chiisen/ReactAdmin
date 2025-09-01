@@ -3,7 +3,7 @@ import { Edit, SimpleForm, TextInput } from 'react-admin';
 const SportItemEdit = (props) => (
     <Edit {...props}>
         <SimpleForm>
-            <p >id 不能修改</p>
+            <p>id 不能修改</p>
             <TextInput source="id" disabled />
             <TextInput source="name_key" />
             <TextInput source="description" />

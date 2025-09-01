@@ -11,13 +11,20 @@ import PostList from './Post/PostList';
 import PostEdit from './Post/PostEdit';
 import PostCreate from './Post/PostCreate';
 
+// 版本號碼
 import SettingVersionList from './SettingVersion/SettingVersionList';
 import SettingVersionEdit from './SettingVersion/SettingVersionEdit';
 import SettingVersionCreate from './SettingVersion/SettingVersionCreate';
 
+// 運動類型
 import SportItemList from './SportItem/SportItemList';
 import SportItemEdit from './SportItem/SportItemEdit';
 import SportItemCreate from './SportItem/SportItemCreate';
+
+// 運動項目
+import SportCategoryList from './SportCategory/SportCategoryList';
+import SportCategoryEdit from './SportCategory/SportCategoryEdit'; // 因為雙 key 無法修改，所以不提供編輯功能，只能新增與刪除
+import SportCategoryCreate from './SportCategory/SportCategoryCreate';
 
 import { ResourceMgr } from './ResourceMgr';
 
@@ -166,6 +173,12 @@ function App() {
             list={SportItemList}
             edit={SportItemEdit}
             create={SportItemCreate}
+          />
+          <Resource
+            name={ResourceMgr.sportCategory}
+            list={SportCategoryList}
+            edit={SportCategoryEdit}
+            create={SportCategoryCreate}
           />
           <Resource
             name={ResourceMgr.posts}
