@@ -36,6 +36,12 @@ import CategoryOptionList from './CategoryOption/CategoryOptionList';
 import CategoryOptionEdit from './CategoryOption/CategoryOptionEdit';
 import CategoryOptionCreate from './CategoryOption/CategoryOptionCreate'
 
+// 多語系文字
+import I18nTextList from './I18nText/I18nTextList';
+import I18nTextEdit from './I18nText/I18nTextEdit';
+import I18nTextCreate from './I18nText/I18nTextCreate';
+
+
 import { ResourceMgr } from './ResourceMgr';
 
 
@@ -201,6 +207,12 @@ function App() {
             list={CategoryOptionList}
             edit={CategoryOptionEdit}
             create={CategoryOptionCreate}
+          />
+          <Resource
+            name={ResourceMgr.i18nText}
+            list={I18nTextList}
+            edit={I18nTextEdit}
+            create={I18nTextCreate}
           />
           {/*
           <Resource

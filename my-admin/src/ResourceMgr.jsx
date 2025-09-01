@@ -14,4 +14,6 @@ export class ResourceMgr {
   static categoryGroup = "categoryGroup";
   /** categoryOption - 分類項目 */
   static categoryOption = "categoryOption";
+  /** i18nText - 多國語系 */
+  static i18nText = "i18nText";
 }
