@@ -180,36 +180,42 @@ function App() {
         <Admin dataProvider={dataProvider}>
           <Resource
             name={ResourceMgr.settingVersion}
+            options={{ label: 'setting_versions' }}
             list={SettingVersionList}
             edit={SettingVersionEdit}
             create={SettingVersionCreate}
           />
           <Resource
             name={ResourceMgr.sportItem}
+            options={{ label: 'sport_item' }}
             list={SportItemList}
             edit={SportItemEdit}
             create={SportItemCreate}
           />
           <Resource
             name={ResourceMgr.sportCategory}
+            options={{ label: 'sport_category' }}
             list={SportCategoryList}
             edit={SportCategoryEdit}
             create={SportCategoryCreate}
           />
           <Resource
             name={ResourceMgr.categoryGroup}
+            options={{ label: 'category_group' }}
             list={CategoryGroupList}
             edit={CategoryGroupEdit}
             create={CategoryGroupCreate}
           />
           <Resource
             name={ResourceMgr.categoryOption}
+            options={{ label: 'category_option' }}
             list={CategoryOptionList}
             edit={CategoryOptionEdit}
             create={CategoryOptionCreate}
           />
           <Resource
             name={ResourceMgr.i18nText}
+            options={{ label: 'i18n_text' }}
             list={I18nTextList}
             edit={I18nTextEdit}
             create={I18nTextCreate}
