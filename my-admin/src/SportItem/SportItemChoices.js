@@ -1,6 +1,6 @@
 /**
  * 運動子類別對照表
- * 參考來源: Q:\APP+CLOUD\Ala 共用模組\AlaCenter新版本運動與生活追蹤資料格式V1.6.8.xlsx
+ * 參考來源: Q:\APP+CLOUD\Ala 共用模組\AlaCenter新版本運動與生活追蹤資料格式V1.6.8.xlsx 的 【運動子類別對照表】
  */
 export const link_type_Choices = [
     { id: '1', name: '1:跑步' },
