@@ -1,4 +1,5 @@
-import { Edit, SimpleForm, TextInput } from 'react-admin';
+import { Edit, SimpleForm, TextInput, SelectInput } from 'react-admin';
+import { link_type_Choices } from './SportItemChoices';
 
 const SportItemEdit = (props) => (
     <Edit {...props}>
@@ -7,7 +8,7 @@ const SportItemEdit = (props) => (
             <TextInput source="id" disabled />
             <TextInput source="name_key" />
             <TextInput source="description" />
-            <TextInput source="link_type" />
+            <SelectInput source="link_type" choices={link_type_Choices} />
             <TextInput source="link_sub_type" />
             <TextInput source="updated_at" />
         </SimpleForm>
