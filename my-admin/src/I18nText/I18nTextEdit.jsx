@@ -5,8 +5,10 @@ const I18nTextEdit = (props) => (
         <SimpleForm>
             <p>id 不能修改</p>
             <TextInput source="id" disabled alwaysOn /> {/* 設定屬性 alwaysOn 時 id 一定送出 */}
+            <p>key 不能修改</p>
             <TextInput source="key" disabled />
-            <TextInput source="lang" />
+            <p>lang 不能修改</p>
+            <TextInput source="lang" disabled />
             <TextInput source="text" />
             <TextInput source="updated_at" />
         </SimpleForm>
