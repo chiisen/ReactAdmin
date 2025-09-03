@@ -71,7 +71,7 @@ const SportCategoryList = () => {
         <List resource={ResourceMgr.sportCategory} title="運動項目">
             <DataTable>
                 <DataTable.Col source="id" />
-                <DataTable.Col source="item_id" label="item_id (運動項目)" render={record => {
+                <DataTable.Col source="item_id" label="item_id (表:sport_item)" render={record => {
                     let array = sportItemList;
                     if (array && Array.isArray(array)) {
                         const found = array.find(item => item.id === record.item_id);
@@ -81,7 +81,7 @@ const SportCategoryList = () => {
                     }
                 }}
                 />
-                <DataTable.Col source="option_id" label="option_id (分類項目)" render={record => {
+                <DataTable.Col source="option_id" label="option_id (表:category_option)" render={record => {
                     let array = categoryOptionList;
                     if (array && Array.isArray(array)) {
                         const found = array.find(item => item.id === record.option_id);
