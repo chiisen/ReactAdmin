@@ -44,12 +44,11 @@ import I18nTextCreate from './I18nText/I18nTextCreate';
 
 import { ResourceMgr } from './ResourceMgr';
 
-
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 
 
-// RESTful API dataProvider 實作
+/** RESTful API dataProvider 實作 */
 const dataProvider = {
   getList: async (resource, params) => {
     const response = await fetch(`${API_BASE_URL}/${resource}/list`, {
@@ -239,7 +238,7 @@ function App() {
             <img src={reactLogo} className="logo react" alt="React logo" />
           </a>
         </div>
-        <h1>Vite + React</h1>
+        <h1>React Admin</h1>
         <div className="card">
           <button onClick={() => setCount((count) => count + 1)}>
             count is {count}
