@@ -70,11 +70,11 @@ const ListActions = ({ columns }) => (
 );
 
 const columns = [
-    <DataTable.Col source="id" />,
-    <DataTable.Col source="data_type" />,
-    <DataTable.Col source="version" />,
-    <DataTable.Col source="updated_at" />,
-    <DataTable.Col source="created_at" />,
+    <DataTable.Col key="id" source="id" />,
+    <DataTable.Col key="data_type" source="data_type" />,
+    <DataTable.Col key="version" source="version" />,
+    <DataTable.Col key="updated_at" source="updated_at" />,
+    <DataTable.Col key="created_at" source="created_at" />,
 ];
 
 /**
@@ -83,7 +83,7 @@ const columns = [
  * @returns 
  */
 const CustomPagination = props => (
-    <Pagination rowsPerPageOptions={[10, 25, 50, 100, 500, 1000]} {...props} />
+    <Pagination rowsPerPageOptions={[5, 10, 25, 50, 100, 500, 1000]} {...props} />
 );
 
 

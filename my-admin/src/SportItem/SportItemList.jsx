@@ -92,7 +92,7 @@ const columns = [
  * @returns 
  */
 const CustomPagination = props => (
-    <Pagination rowsPerPageOptions={[10, 25, 50, 100, 500, 1000]} {...props} />
+    <Pagination rowsPerPageOptions={[5, 10, 25, 50, 100, 500, 1000]} {...props} />
 );
 
 /**

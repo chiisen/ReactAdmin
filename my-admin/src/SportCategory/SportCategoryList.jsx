@@ -107,7 +107,7 @@ const getColumns = (sportItemList, categoryOptionList) => [
  * @returns 
  */
 const CustomPagination = props => (
-    <Pagination rowsPerPageOptions={[10, 25, 50, 100, 500, 1000]} {...props} />
+    <Pagination rowsPerPageOptions={[5, 10, 25, 50, 100, 500, 1000]} {...props} />
 );
 
 
@@ -186,9 +186,9 @@ const SportCategoryList = () => {
             actions={<ListActions columns={columns} />}
             pagination={<CustomPagination />}
         >
-            <DataTable>
-                {columns}
-            </DataTable>
+                <DataTable>
+                    {columns.map((col, idx) => React.cloneElement(col, { key: col.props.source || idx }))}
+                </DataTable>
         </List>
     );
 };
