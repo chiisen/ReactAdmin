@@ -74,12 +74,12 @@ const ListActions = ({ columns }) => (
 
 
 const columns = [
-    <DataTable.Col source="id" />,
-    <DataTable.Col source="key" />,
-    <DataTable.Col source="lang" />,
-    <DataTable.Col source="text" />,
-    <DataTable.Col source="updated_at" />,
-    <DataTable.Col source="created_at" />,
+    <DataTable.Col key="id" source="id" />, 
+    <DataTable.Col key="key" source="key" />, 
+    <DataTable.Col key="lang" source="lang" />, 
+    <DataTable.Col key="text" source="text" />, 
+    <DataTable.Col key="updated_at" source="updated_at" />, 
+    <DataTable.Col key="created_at" source="created_at" />,
 ];
 
 /**

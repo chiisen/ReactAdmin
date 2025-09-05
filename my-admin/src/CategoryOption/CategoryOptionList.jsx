@@ -74,13 +74,13 @@ const ListActions = ({ columns }) => (
 
 
 const columns = [
-    <DataTable.Col source="id" />,
-    <DataTable.Col source="group_id" />,
-    <DataTable.Col source="name_key" />,
-    <DataTable.Col source="description" />,
-    <DataTable.Col source="sort_order" />,
-    <DataTable.Col source="updated_at" />,
-    <DataTable.Col source="created_at" />,
+    <DataTable.Col key="id" source="id" />, 
+    <DataTable.Col key="group_id" source="group_id" />, 
+    <DataTable.Col key="name_key" source="name_key" />, 
+    <DataTable.Col key="description" source="description" />, 
+    <DataTable.Col key="sort_order" source="sort_order" />, 
+    <DataTable.Col key="updated_at" source="updated_at" />, 
+    <DataTable.Col key="created_at" source="created_at" />,
 ];
 
 /**

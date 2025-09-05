@@ -48,3 +48,9 @@ VITE_API_BASE_URL=http://192.168.1.235:3005
 參考來源: Q:\APP+CLOUD\Ala 共用模組\AlaCenter新版本運動與生活追蹤資料格式V1.6.8.xlsx 的 【運動子類別對照表】  
 [SportItemChoices.js](./my-admin/src/SportItem/SportItemChoices.js)  
 
+## 執行批次檔
+正常需要 cd my-admin 進去再執行 npm run dev
+現在執行執行下面的批次檔案
+```bash
+.\run
+```
