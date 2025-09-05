@@ -51,121 +51,181 @@ const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 /** RESTful API dataProvider 實作 */
 const dataProvider = {
   getList: async (resource, params) => {
-    const response = await fetch(`${API_BASE_URL}/${resource}/list`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'appName': 'ReactAdmin' },
-      body: JSON.stringify({
-        ...params,
-        sort: params.sort, // 確保排序參數有傳遞
-        page: params.pagination?.page,
-        perPage: params.pagination?.perPage,
-      })
-    });
-    if (!response.ok) {
-      const text = await response.text();
-      throw new Error(`API Error: ${response.status} - ${text}`);
+    const route = `${API_BASE_URL}/${resource}/list`;
+    const method = 'POST';
+    try {
+      const response = await fetch(route, {
+        method,
+        headers: { 'Content-Type': 'application/json', 'appName': 'ReactAdmin' },
+        body: JSON.stringify({
+          ...params,
+          sort: params.sort, // 確保排序參數有傳遞
+          page: params.pagination?.page,
+          perPage: params.pagination?.perPage,
+        })
+      });
+      if (!response.ok) {
+        const text = await response.text();
+        throw new Error(`API Error: ${response.status} - ${text}`);
+      }
+      const result = await response.json();
+      return {
+        data: result.data,
+        total: result.total,
+      };
+    } catch (error) {
+      let msg = `API 連線失敗\nRoute: ${route}\nMethod: ${method}`;
+      if (error.status) msg += `\nHTTP Code: ${error.status}`;
+      msg += `\nError: ${error.message || String(error)}`;
+      window.alert(msg);
+      throw error;
     }
-    const result = await response.json();
-    return {
-      data: result.data,
-      total: result.total,
-    };
   },
   getOne: async (resource, params) => {
-    const response = await fetch(`${API_BASE_URL}/${resource}/get`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'appName': 'ReactAdmin' },
-      body: JSON.stringify(params)
-    });
-    if (!response.ok) {
-      const text = await response.text();
-      throw new Error(`API Error: ${response.status} - ${text}`);
-    }
-    const result = await response.json();
-    if (Array.isArray(result.data)) {
-      if (result.data.length === 0) {
-        throw new Error("getOne: 查無資料（API 回傳空陣列）");
+    const route = `${API_BASE_URL}/${resource}/get`;
+    const method = 'POST';
+    try {
+      const response = await fetch(route, {
+        method,
+        headers: { 'Content-Type': 'application/json', 'appName': 'ReactAdmin' },
+        body: JSON.stringify(params)
+      });
+      if (!response.ok) {
+        const text = await response.text();
+        throw new Error(`API Error: ${response.status} - ${text}`);
       }
-      throw new Error("getOne: 回傳型別錯誤，應為物件而非陣列。請檢查 API 是否誤用 getList 結構。");
+      const result = await response.json();
+      if (Array.isArray(result.data)) {
+        if (result.data.length === 0) {
+          throw new Error("getOne: 查無資料（API 回傳空陣列）");
+        }
+        throw new Error("getOne: 回傳型別錯誤，應為物件而非陣列。請檢查 API 是否誤用 getList 結構。");
+      }
+      if (!result.data || result.data.id === undefined) {
+        throw new Error("getOne: 回傳資料缺少 id 欄位");
+      }
+      return {
+        data: result.data,
+      };
+    } catch (error) {
+      let msg = `API 連線失敗\nRoute: ${route}\nMethod: ${method}`;
+      if (error.status) msg += `\nHTTP Code: ${error.status}`;
+      msg += `\nError: ${error.message || String(error)}`;
+      window.alert(msg);
+      throw error;
     }
-    if (!result.data || result.data.id === undefined) {
-      throw new Error("getOne: 回傳資料缺少 id 欄位");
-    }
-    return {
-      data: result.data,
-    };
   },
   create: async (resource, params) => {
-    const response = await fetch(`${API_BASE_URL}/${resource}/create`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'appName': 'ReactAdmin'
-      },
-      body: JSON.stringify(params.data)
-    });
-    if (!response.ok) {
-      const text = await response.text();
-      throw new Error(`API Error: ${response.status} - ${text}`);
+    const route = `${API_BASE_URL}/${resource}/create`;
+    const method = 'POST';
+    try {
+      const response = await fetch(route, {
+        method,
+        headers: {
+          'Content-Type': 'application/json',
+          'appName': 'ReactAdmin'
+        },
+        body: JSON.stringify(params.data)
+      });
+      if (!response.ok) {
+        const text = await response.text();
+        throw new Error(`API Error: ${response.status} - ${text}`);
+      }
+      const result = await response.json();
+      return {
+        data: result.data,
+      };
+    } catch (error) {
+      let msg = `API 連線失敗\nRoute: ${route}\nMethod: ${method}`;
+      if (error.status) msg += `\nHTTP Code: ${error.status}`;
+      msg += `\nError: ${error.message || String(error)}`;
+      window.alert(msg);
+      throw error;
     }
-    const result = await response.json();
-    return {
-      data: result.data,
-    };
   },
   update: async (resource, params) => {
-    const response = await fetch(`${API_BASE_URL}/${resource}/update`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'appName': 'ReactAdmin'
-      },
-      body: JSON.stringify(params)
-    });
-    if (!response.ok) {
-      const text = await response.text();
-      throw new Error(`API Error: ${response.status} - ${text}`);
+    const route = `${API_BASE_URL}/${resource}/update`;
+    const method = 'POST';
+    try {
+      const response = await fetch(route, {
+        method,
+        headers: {
+          'Content-Type': 'application/json',
+          'appName': 'ReactAdmin'
+        },
+        body: JSON.stringify(params)
+      });
+      if (!response.ok) {
+        const text = await response.text();
+        throw new Error(`API Error: ${response.status} - ${text}`);
+      }
+      const result = await response.json();
+      return {
+        data: result.data,
+      };
+    } catch (error) {
+      let msg = `API 連線失敗\nRoute: ${route}\nMethod: ${method}`;
+      if (error.status) msg += `\nHTTP Code: ${error.status}`;
+      msg += `\nError: ${error.message || String(error)}`;
+      window.alert(msg);
+      throw error;
     }
-    const result = await response.json();
-    return {
-      data: result.data,
-    };
   },
   delete: async (resource, params) => {
-    const response = await fetch(`${API_BASE_URL}/${resource}/delete`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'appName': 'ReactAdmin'
-      },
-      body: JSON.stringify(params)
-    });
-    if (!response.ok) {
-      const text = await response.text();
-      throw new Error(`API Error: ${response.status} - ${text}`);
+    const route = `${API_BASE_URL}/${resource}/delete`;
+    const method = 'POST';
+    try {
+      const response = await fetch(route, {
+        method,
+        headers: {
+          'Content-Type': 'application/json',
+          'appName': 'ReactAdmin'
+        },
+        body: JSON.stringify(params)
+      });
+      if (!response.ok) {
+        const text = await response.text();
+        throw new Error(`API Error: ${response.status} - ${text}`);
+      }
+      const result = await response.json();
+      return {
+        data: result.data,
+      };
+    } catch (error) {
+      let msg = `API 連線失敗\nRoute: ${route}\nMethod: ${method}`;
+      if (error.status) msg += `\nHTTP Code: ${error.status}`;
+      msg += `\nError: ${error.message || String(error)}`;
+      window.alert(msg);
+      throw error;
     }
-    const result = await response.json();
-    return {
-      data: result.data,
-    };
   },
   deleteMany: async (resource, params) => {
-    const response = await fetch(`${API_BASE_URL}/${resource}/deleteMany`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'appName': 'ReactAdmin'
-      },
-      body: JSON.stringify({ ids: params.ids })
-    });
-    if (!response.ok) {
-      const text = await response.text();
-      throw new Error(`API Error: ${response.status} - ${text}`);
+    const route = `${API_BASE_URL}/${resource}/deleteMany`;
+    const method = 'POST';
+    try {
+      const response = await fetch(route, {
+        method,
+        headers: {
+          'Content-Type': 'application/json',
+          'appName': 'ReactAdmin'
+        },
+        body: JSON.stringify({ ids: params.ids })
+      });
+      if (!response.ok) {
+        const text = await response.text();
+        throw new Error(`API Error: ${response.status} - ${text}`);
+      }
+      const result = await response.json();
+      return {
+        data: result.data,
+      };
+    } catch (error) {
+      let msg = `API 連線失敗\nRoute: ${route}\nMethod: ${method}`;
+      if (error.status) msg += `\nHTTP Code: ${error.status}`;
+      msg += `\nError: ${error.message || String(error)}`;
+      window.alert(msg);
+      throw error;
     }
-    const result = await response.json();
-    return {
-      data: result.data,
-    };
   },
 };
 
