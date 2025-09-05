@@ -11,6 +11,8 @@ import { useEffect, useState } from 'react';
 import { List, DataTable } from 'react-admin';
 import { ResourceMgr } from '../ResourceMgr';
 
+import { localStorageMgr } from '../utils/localStorageMgr'
+
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 /**
@@ -121,10 +123,8 @@ const SportCategoryList = () => {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        const sportItemResource = ResourceMgr.sportItem;
-        const categoryOptionResource = ResourceMgr.categoryOption;
 
-        const fetchSportItems = fetch(`${API_BASE_URL}/${sportItemResource}/list`, {
+        const fetchSportItems = fetch(`${API_BASE_URL}/${ResourceMgr.sportItem}/list`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -140,13 +140,15 @@ const SportCategoryList = () => {
             .then(res => res.json())
             .then(json => {
                 setSportItemList(json.data || []);
+
+                localStorageMgr.setItem(ResourceMgr.sportItem, json.data || []); // 儲存到 localStorage
             })
             .catch(err => {
                 setSportItemList([]);
                 console.error('API Fetch sport items 錯誤', err);
             });
 
-        const fetchCategoryOptions = fetch(`${API_BASE_URL}/${categoryOptionResource}/list`, {
+        const fetchCategoryOptions = fetch(`${API_BASE_URL}/${ResourceMgr.categoryOption}/list`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -162,6 +164,8 @@ const SportCategoryList = () => {
             .then(res => res.json())
             .then(json => {
                 setCategoryOptionList(json.data || []);
+
+                localStorageMgr.setItem(ResourceMgr.categoryOption, json.data || []); // 儲存到 localStorage
             })
             .catch(err => {
                 setCategoryOptionList([]);
