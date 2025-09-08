@@ -74,12 +74,12 @@ const ListActions = ({ columns }) => (
 
 
 const columns = [
-    <DataTable.Col key="id" source="id" />, 
-    <DataTable.Col key="key" source="key" />, 
-    <DataTable.Col key="lang" source="lang" />, 
-    <DataTable.Col key="text" source="text" />, 
-    <DataTable.Col key="updated_at" source="updated_at" />, 
-    <DataTable.Col key="created_at" source="created_at" />,
+    <DataTable.Col key="id" source="id" align="right" />, 
+    <DataTable.Col key="key" source="key" align="left" />, 
+    <DataTable.Col key="lang" source="lang" align="left"  />, 
+    <DataTable.Col key="text" source="text" align="left"  />, 
+    <DataTable.Col key="updated_at" source="updated_at" align="left"  />, 
+    <DataTable.Col key="created_at" source="created_at" align="left"  />,
 ];
 
 /**
@@ -97,16 +97,25 @@ const CustomPagination = props => (
  * @returns 
  */
 const I18nTextList = () => (
-    <List
-        resource={ResourceMgr.i18nText}
-        title="多語系文字"
-        actions={<ListActions columns={columns} />}
-        pagination={<CustomPagination />}
-    >
-        <DataTable>
-            {columns}
-        </DataTable>
-    </List>
+    <>
+        <style>
+            {`
+                .center-header th {
+                    text-align: center !important;
+                }
+            `}
+        </style>
+        <List
+            resource={ResourceMgr.i18nText}
+            title="多語系文字"
+            actions={<ListActions columns={columns} />}
+            pagination={<CustomPagination />}
+        >
+            <DataTable className="center-header">
+                {columns}
+            </DataTable>
+        </List>
+    </>
 );
 
 export default I18nTextList;
