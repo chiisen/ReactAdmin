@@ -72,18 +72,18 @@ const ListActions = ({ columns }) => (
 );
 
 const columns = [
-    <DataTable.Col source="id" key="id" />,
-    <DataTable.Col source="name_key" key="name_key" />,
-    <DataTable.Col source="description" key="description" />,
-    <DataTable.Col source="link_type" key="link_type"
+    <DataTable.Col source="id" key="id" align="right" />,
+    <DataTable.Col source="name_key" key="name_key" align="left" />,
+    <DataTable.Col source="description" key="description" align="left" />,
+    <DataTable.Col source="link_type" key="link_type" align="left"
         render={record => {
             const found = link_type_Choices.find(choice => choice.id === String(record.link_type));
             return found ? found.name : record.link_type;
         }}
     />,
-    <DataTable.Col source="link_sub_type" key="link_sub_type" />,
-    <DataTable.Col source="updated_at" key="updated_at" />,
-    <DataTable.Col source="created_at" key="created_at" />,
+    <DataTable.Col source="link_sub_type" key="link_sub_type" align="right" />,
+    <DataTable.Col source="updated_at" key="updated_at" align="left" />,
+    <DataTable.Col source="created_at" key="created_at" align="left" />,
 ];
 
 /**
@@ -100,16 +100,25 @@ const CustomPagination = props => (
  * @returns 
  */
 const SportItemList = () => (
-    <List
-        resource={ResourceMgr.sportItem}
-        title="運動類型"
-        actions={<ListActions columns={columns} />}
-        pagination={<CustomPagination />}
-    >
-        <DataTable>
-            {columns}
-        </DataTable>
-    </List>
+    <>
+        <style>
+            {`
+                .center-header th {
+                    text-align: center !important;
+                }
+            `}
+        </style>
+        <List
+            resource={ResourceMgr.sportItem}
+            title="運動類型"
+            actions={<ListActions columns={columns} />}
+            pagination={<CustomPagination />}
+        >
+            <DataTable className="center-header">
+                {columns}
+            </DataTable>
+        </List>
+    </>
 );
 
 export default SportItemList;
