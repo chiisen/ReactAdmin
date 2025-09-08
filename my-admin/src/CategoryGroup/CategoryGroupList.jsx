@@ -74,12 +74,12 @@ const ListActions = ({ columns }) => (
 
 
 const columns = [
-    <DataTable.Col key="id" source="id" />, 
-    <DataTable.Col key="name_key" source="name_key" />, 
-    <DataTable.Col key="description" source="description" />, 
-    <DataTable.Col key="sort_order" source="sort_order" />, 
-    <DataTable.Col key="updated_at" source="updated_at" />, 
-    <DataTable.Col key="created_at" source="created_at" />,
+    <DataTable.Col key="id" source="id" align="right" />,
+    <DataTable.Col key="name_key" source="name_key" align="left" />,
+    <DataTable.Col key="description" source="description" align="left" />,
+    <DataTable.Col key="sort_order" source="sort_order" align="left" />,
+    <DataTable.Col key="updated_at" source="updated_at" align="left" />,
+    <DataTable.Col key="created_at" source="created_at" align="left" />,
 ];
 
 /**
@@ -97,16 +97,25 @@ const CustomPagination = props => (
  * @returns 
  */
 const CategoryGroupList = () => (
-    <List 
-        resource={ResourceMgr.categoryGroup} 
-        title="分類維度"
-        actions={<ListActions columns={columns} />}
-        pagination={<CustomPagination />}
+    <>
+        <style>
+            {`
+                .center-header th {
+                    text-align: center !important;
+                }
+            `}
+        </style>
+        <List
+            resource={ResourceMgr.categoryGroup}
+            title="分類維度"
+            actions={<ListActions columns={columns} />}
+            pagination={<CustomPagination />}
         >
-        <DataTable>
-            {columns}
-        </DataTable>
-    </List>
+            <DataTable className="center-header">
+                {columns}
+            </DataTable>
+        </List>
+    </>
 );
 
 export default CategoryGroupList;
