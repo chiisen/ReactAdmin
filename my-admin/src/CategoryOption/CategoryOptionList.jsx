@@ -74,13 +74,13 @@ const ListActions = ({ columns }) => (
 
 
 const columns = [
-    <DataTable.Col key="id" source="id" />, 
-    <DataTable.Col key="group_id" source="group_id" />, 
-    <DataTable.Col key="name_key" source="name_key" />, 
-    <DataTable.Col key="description" source="description" />, 
-    <DataTable.Col key="sort_order" source="sort_order" />, 
-    <DataTable.Col key="updated_at" source="updated_at" />, 
-    <DataTable.Col key="created_at" source="created_at" />,
+    <DataTable.Col key="id" source="id" align="right" />,
+    <DataTable.Col key="group_id" source="group_id" align="left" />,
+    <DataTable.Col key="name_key" source="name_key" align="left" />,
+    <DataTable.Col key="description" source="description" align="left" />,
+    <DataTable.Col key="sort_order" source="sort_order" align="right" />,
+    <DataTable.Col key="updated_at" source="updated_at" align="left" />,
+    <DataTable.Col key="created_at" source="created_at" align="left" />,
 ];
 
 /**
@@ -97,16 +97,25 @@ const CustomPagination = props => (
  * @returns 
  */
 const CategoryOptionList = () => (
-    <List
-        resource={ResourceMgr.categoryOption}
-        title="分類項目"
-        actions={<ListActions columns={columns} />}
-        pagination={<CustomPagination />}
-    >
-        <DataTable>
-            {columns}
-        </DataTable>
-    </List>
+    <>
+        <style>
+            {`
+                .center-header th {
+                    text-align: center !important;
+                }
+            `}
+        </style>
+        <List
+            resource={ResourceMgr.categoryOption}
+            title="分類項目"
+            actions={<ListActions columns={columns} />}
+            pagination={<CustomPagination />}
+        >
+            <DataTable className="center-header">
+                {columns}
+            </DataTable>
+        </List>
+    </>
 );
 
 export default CategoryOptionList;
