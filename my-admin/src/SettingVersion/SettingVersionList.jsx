@@ -70,11 +70,11 @@ const ListActions = ({ columns }) => (
 );
 
 const columns = [
-    <DataTable.Col key="id" source="id" />,
-    <DataTable.Col key="data_type" source="data_type" />,
-    <DataTable.Col key="version" source="version" />,
-    <DataTable.Col key="updated_at" source="updated_at" />,
-    <DataTable.Col key="created_at" source="created_at" />,
+    <DataTable.Col key="id" source="id" align="right" />,
+    <DataTable.Col key="data_type" source="data_type" align="left" />,
+    <DataTable.Col key="version" source="version" align="left" />,
+    <DataTable.Col key="updated_at" source="updated_at" align="left" />,
+    <DataTable.Col key="created_at" source="created_at" align="left" />,
 ];
 
 /**
@@ -92,16 +92,25 @@ const CustomPagination = props => (
  * @returns 
  */
 const SettingVersionList = () => (
-    <List
-        resource={ResourceMgr.settingVersion}
-        title="版本號碼"
-        actions={<ListActions columns={columns} />}
-        pagination={<CustomPagination />}
-    >
-        <DataTable>
-            {columns}
-        </DataTable>
-    </List>
+    <>
+        <style>
+            {`
+                .center-header th {
+                    text-align: center !important;
+                }
+            `}
+        </style>
+        <List
+            resource={ResourceMgr.settingVersion}
+            title="版本號碼"
+            actions={<ListActions columns={columns} />}
+            pagination={<CustomPagination />}
+        >
+            <DataTable className="center-header">
+                {columns}
+            </DataTable>
+        </List>
+    </>
 );
 
 export default SettingVersionList;
