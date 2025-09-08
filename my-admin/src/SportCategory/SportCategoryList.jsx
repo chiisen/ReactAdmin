@@ -78,8 +78,8 @@ const ListActions = ({ columns }) => (
 
 
 const getColumns = (sportItemList, categoryOptionList) => [
-    <DataTable.Col source="id" />,
-    <DataTable.Col source="item_id" label="item_id (表:sport_item)"
+    <DataTable.Col source="id" align="right" />,
+    <DataTable.Col source="item_id" label="item_id (表:sport_item)" align="left"
         render={record => {
             let array = sportItemList;
             if (array && Array.isArray(array)) {
@@ -90,7 +90,7 @@ const getColumns = (sportItemList, categoryOptionList) => [
             }
         }}
     />,
-    <DataTable.Col source="option_id" label="option_id (表:category_option)" render={record => {
+    <DataTable.Col source="option_id" label="option_id (表:category_option)" align="left" render={record => {
         let array = categoryOptionList;
         if (array && Array.isArray(array)) {
             const found = array.find(item => item.id === record.option_id);
@@ -99,8 +99,8 @@ const getColumns = (sportItemList, categoryOptionList) => [
             return record.option_id;
         }
     }} />,
-    <DataTable.Col source="updated_at" />,
-    <DataTable.Col source="created_at" />,
+    <DataTable.Col source="updated_at" align="left" />,
+    <DataTable.Col source="created_at" align="left" />,
 ];
 
 /**
@@ -184,16 +184,25 @@ const SportCategoryList = () => {
     const columns = getColumns(sportItemList, categoryOptionList);
 
     return (
-        <List
-            resource={ResourceMgr.sportCategory}
-            title="運動項目"
-            actions={<ListActions columns={columns} />}
-            pagination={<CustomPagination />}
-        >
-                <DataTable>
+        <>
+            <style>
+                {`
+                .center-header th {
+                    text-align: center !important;
+                }
+            `}
+            </style>
+            <List
+                resource={ResourceMgr.sportCategory}
+                title="運動項目"
+                actions={<ListActions columns={columns} />}
+                pagination={<CustomPagination />}
+            >
+                <DataTable className="center-header">
                     {columns.map((col, idx) => React.cloneElement(col, { key: col.props.source || idx }))}
                 </DataTable>
-        </List>
+            </List>
+        </>
     );
 };
 
