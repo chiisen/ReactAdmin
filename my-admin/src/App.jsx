@@ -64,6 +64,14 @@ const dataProvider = {
         throw new Error(`API Error: ${response.status} - ${text}`);
       }
       const result = await response.json();
+        if (
+          !result ||
+          typeof result !== 'object' ||
+          !Object.prototype.hasOwnProperty.call(result, 'data') ||
+          !Object.prototype.hasOwnProperty.call(result, 'total')
+        ) {
+          throw new Error('getList: API 回傳格式錯誤，應包含 data 與 total 欄位');
+        }
       return {
         data: result.data,
         total: result.total,
@@ -90,6 +98,9 @@ const dataProvider = {
         throw new Error(`API Error: ${response.status} - ${text}`);
       }
       const result = await response.json();
+        if (!result || typeof result !== 'object' || !Object.prototype.hasOwnProperty.call(result, 'data')) {
+          throw new Error('getOne: API 回傳格式錯誤，應包含 data 欄位');
+        }
       if (Array.isArray(result.data)) {
         if (result.data.length === 0) {
           throw new Error("getOne: 查無資料（API 回傳空陣列）");
@@ -127,6 +138,9 @@ const dataProvider = {
         throw new Error(`API Error: ${response.status} - ${text}`);
       }
       const result = await response.json();
+        if (!result || typeof result !== 'object' || !Object.prototype.hasOwnProperty.call(result, 'data')) {
+          throw new Error('create: API 回傳格式錯誤，應包含 data 欄位');
+        }
       return {
         data: result.data,
       };
@@ -155,6 +169,9 @@ const dataProvider = {
         throw new Error(`API Error: ${response.status} - ${text}`);
       }
       const result = await response.json();
+        if (!result || typeof result !== 'object' || !Object.prototype.hasOwnProperty.call(result, 'data')) {
+          throw new Error('update: API 回傳格式錯誤，應包含 data 欄位');
+        }
       return {
         data: result.data,
       };
@@ -183,6 +200,9 @@ const dataProvider = {
         throw new Error(`API Error: ${response.status} - ${text}`);
       }
       const result = await response.json();
+        if (!result || typeof result !== 'object' || !Object.prototype.hasOwnProperty.call(result, 'data')) {
+          throw new Error('delete: API 回傳格式錯誤，應包含 data 欄位');
+        }
       return {
         data: result.data,
       };
@@ -211,6 +231,9 @@ const dataProvider = {
         throw new Error(`API Error: ${response.status} - ${text}`);
       }
       const result = await response.json();
+        if (!result || typeof result !== 'object' || !Object.prototype.hasOwnProperty.call(result, 'data')) {
+          throw new Error('deleteMany: API 回傳格式錯誤，應包含 data 欄位');
+        }
       return {
         data: result.data,
       };
