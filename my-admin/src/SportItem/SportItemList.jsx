@@ -74,7 +74,7 @@ const ListActions = ({ columns }) => (
 const columns = [
     <DataTable.Col source="id" key="id" align="right" />,
     <DataTable.Col source="name_key" key="name_key" align="left" />,
-    <DataTable.Col source="description" key="description" align="left" />,
+    <DataTable.Col source="description" key="description" align="left" />, 
     <DataTable.Col source="link_type" key="link_type" align="left"
         render={record => {
             const found = link_type_Choices.find(choice => choice.id === String(record.link_type));
@@ -95,6 +95,59 @@ const CustomPagination = props => (
     <Pagination rowsPerPageOptions={[5, 10, 25, 50, 100, 500, 1000]} {...props} />
 );
 
+import { useEffect, useRef, useState } from 'react';
+const ListContentWithLoading = ({ columns }) => {
+    const { isLoading } = useListContext();
+    const [showLoading, setShowLoading] = useState(true); // 初始即顯示 loading
+    const timerRef = useRef(null);
+
+    useEffect(() => {
+        if (isLoading) {
+            setShowLoading(true);
+            if (timerRef.current) {
+                clearTimeout(timerRef.current);
+                timerRef.current = null;
+            }
+        } else {
+            // API 回來時，延遲 1 秒再隱藏 loading
+            timerRef.current = setTimeout(() => {
+                setShowLoading(false);
+            }, 1000);
+        }
+        return () => {
+            if (timerRef.current) {
+                clearTimeout(timerRef.current);
+                timerRef.current = null;
+            }
+        };
+    }, [isLoading]);
+
+    if (showLoading) {
+        return (
+            <div
+                style={{
+                    width: '100%',
+                    maxWidth: '900px',
+                    margin: '0 auto',
+                    minWidth: '300px',
+                    minHeight: '300px',
+                    padding: '2rem',
+                    textAlign: 'center',
+                    color: '#888',
+                    fontSize: '1.2rem',
+                    boxSizing: 'border-box',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                }}
+            >
+                載入中 ...
+            </div>
+        );
+    }
+    return <DataTable className="center-header">{columns}</DataTable>;
+};
+
 /**
  * 頁面欄位顯示標籤
  * @returns 
@@ -114,9 +167,7 @@ const SportItemList = () => (
             actions={<ListActions columns={columns} />}
             pagination={<CustomPagination />}
         >
-            <DataTable className="center-header">
-                {columns}
-            </DataTable>
+            <ListContentWithLoading columns={columns} />
         </List>
     </>
 );

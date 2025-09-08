@@ -173,15 +173,26 @@ const SportCategoryList = () => {
             });
 
         Promise.all([fetchSportItems, fetchCategoryOptions]).finally(() => {
-            setLoading(false);
+            // loading 最少顯示 1 秒
+            setTimeout(() => {
+                setLoading(false);
+            }, 1000);
         });
     }, []);
 
 
-    if (loading) return <div>載入中 ...</div>;
 
 
     const columns = getColumns(sportItemList, categoryOptionList);
+
+    // 新增一個包裝元件，根據 loading 狀態顯示提示
+    const ListContentWithLoading = ({ columns }) => {
+        const { isLoading } = useListContext();
+        if (isLoading) {
+            return <div style={{ textAlign: 'center', padding: '2rem', color: '#888' }}>Loading...</div>;
+        }
+        return <DataTable className="center-header">{columns}</DataTable>;
+    };
 
     return (
         <>
@@ -198,9 +209,25 @@ const SportCategoryList = () => {
                 actions={<ListActions columns={columns} />}
                 pagination={<CustomPagination />}
             >
-                <DataTable className="center-header">
-                    {columns.map((col, idx) => React.cloneElement(col, { key: col.props.source || idx }))}
-                </DataTable>
+                {loading ? (
+                    <div
+                        style={{
+                            width: '100%',
+                            minWidth: '300px',
+                            padding: '2rem',
+                            textAlign: 'center',
+                            color: '#888',
+                            fontSize: '1.2rem',
+                            boxSizing: 'border-box',
+                        }}
+                    >
+                        載入中 ...
+                    </div>
+                ) : (
+                    <DataTable className="center-header">
+                        {columns.map((col, idx) => React.cloneElement(col, { key: `${col.props.source || idx}` }))}
+                    </DataTable>
+                )}
             </List>
         </>
     );
