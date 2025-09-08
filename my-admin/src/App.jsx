@@ -6,11 +6,6 @@ import viteLogo from '/vite.svg'
 import './App.css'
 import { Admin, Resource } from 'react-admin';
 
-// Post 範例
-import PostList from './Post/PostList';
-import PostEdit from './Post/PostEdit';
-import PostCreate from './Post/PostCreate';
-
 // 版本號碼
 import SettingVersionList from './SettingVersion/SettingVersionList';
 import SettingVersionEdit from './SettingVersion/SettingVersionEdit';
@@ -279,14 +274,6 @@ function App() {
             edit={I18nTextEdit}
             create={I18nTextCreate}
           />
-          {/*
-          <Resource
-            name={ResourceMgr.posts}
-            list={PostList}
-            edit={PostEdit}
-            create={PostCreate}
-          />
-          */}
         </Admin>
       </div>
       <div className="info-section">
