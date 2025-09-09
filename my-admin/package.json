@@ -13,7 +13,8 @@
     "ra-data-fakerest": "^5.10.2",
     "react": "^19.1.1",
     "react-admin": "^5.10.2",
-    "react-dom": "^19.1.1"
+    "react-dom": "^19.1.1",
+    "xlsx": "^0.18.5"
   },
   "devDependencies": {
     "@eslint/js": "^9.33.0",
