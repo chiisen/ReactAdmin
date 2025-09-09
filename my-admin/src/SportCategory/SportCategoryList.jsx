@@ -221,7 +221,7 @@ const SportCategoryList = () => {
                             boxSizing: 'border-box',
                         }}
                     >
-                        載入中 ...
+                        Loading ...
                     </div>
                 ) : (
                     <DataTable className="center-header">
