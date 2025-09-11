@@ -2,7 +2,7 @@ import { Create, SimpleForm, TextInput, SelectInput } from 'react-admin';
 
 const langChoices = [
     { id: 'de-DE', name: '德語 (de-DE)' },
-    { id: 'en-us', name: '英文 (en-us)' },
+    { id: 'en-US', name: '英文 (en-US)' },
     { id: 'es-ES', name: '西班牙語 (es-ES)' },
     { id: 'fr-FR', name: '法語 (fr-FR)' },
     { id: 'it-IT', name: '義大利語 (it-IT)' },
