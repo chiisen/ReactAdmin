@@ -8,7 +8,7 @@ const CategoryGroupEdit = (props) => (
             <TextInput source="name_key" />
             <TextInput source="description" />
             <TextInput source="sort_order" />
-            <TextInput source="updated_at" />
+            <TextInput source="updated_at" disabled />
         </SimpleForm>
     </Edit>
 );

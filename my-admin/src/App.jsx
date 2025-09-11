@@ -18,7 +18,7 @@ import SportItemCreate from './SportItem/SportItemCreate';
 
 // 運動項目
 import SportCategoryList from './SportCategory/SportCategoryList';
-import SportCategoryEdit from './SportCategory/SportCategoryEdit'; // 因為雙 key 無法修改，所以不提供編輯功能，只能新增與刪除
+//import SportCategoryEdit from './SportCategory/SportCategoryEdit'; // 因為雙 key 無法修改，所以不提供編輯功能，只能新增與刪除
 import SportCategoryCreate from './SportCategory/SportCategoryCreate';
 
 // 分類維度
@@ -273,7 +273,7 @@ function App() {
             name={ResourceMgr.sportCategory}
             options={{ label: 'sport_category' }}
             list={SportCategoryList}
-            edit={SportCategoryEdit}
+            //edit={SportCategoryEdit}//欄位完全不能改，所以關閉不開放
             create={SportCategoryCreate}
           />
           <Resource

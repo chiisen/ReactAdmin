@@ -10,7 +10,7 @@ const SportItemEdit = (props) => (
             <TextInput source="description" />
             <SelectInput source="link_type" choices={link_type_Choices} />
             <TextInput source="link_sub_type" />
-            <TextInput source="updated_at" />
+            <TextInput source="updated_at" disabled />
         </SimpleForm>
     </Edit>
 );
