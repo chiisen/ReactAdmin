@@ -1,6 +1,6 @@
 
 import React, { useEffect, useState } from 'react';
-import { Create, SimpleForm, SelectInput } from 'react-admin';
+import { Create, SimpleForm, SelectInput, TextInput } from 'react-admin';
 import { ResourceMgr } from '../ResourceMgr';
 import { localStorageMgr } from '../utils/localStorageMgr';
 
@@ -31,6 +31,7 @@ const SportCategoryCreate = (props) => {
                 <SelectInput source="item_id" choices={item_idChoices} />
                 <p>option_id 必填</p>
                 <SelectInput source="option_id" choices={option_idChoices} />
+                <TextInput source="sort_order" />
             </SimpleForm>
         </Create>
     );

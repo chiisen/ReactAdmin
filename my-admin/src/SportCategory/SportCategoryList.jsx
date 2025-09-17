@@ -99,6 +99,7 @@ const getColumns = (sportItemList, categoryOptionList) => [
             return record.option_id;
         }
     }} />,
+    <DataTable.Col source="sort_order" align="right" />,
     <DataTable.Col source="updated_at" align="left" />,
     <DataTable.Col source="created_at" align="left" />,
 ];
