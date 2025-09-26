@@ -68,6 +68,7 @@ const CustomExportButton = ({ columns }) => {
 
 /**
  * 匯入 Excel 按鈕元件
+ * Excel 格式參照(存成 .xlsx 格式): https://docs.google.com/spreadsheets/d/1eQyNQjjV27I1-z6HhP7IL7tb8-h-QsSqxwCSjmMvC80/edit?gid=0#gid=0
  */
 const ImportExcelButton = ({ categoryOptionList, sportItemList }) => {
     const dataProvider = useDataProvider();
