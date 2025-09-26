@@ -15,11 +15,11 @@ const SportCategoryCreate = (props) => {
         const itemIdArray = sportItem.map(item => ({
             id: item.id,
             name: `${item.id}:${item.description || item.dscription || ''}`
-        }));
+        })).sort((a, b) => a.id - b.id);
         const optionIdArray = categoryOption.map(option => ({
             id: option.id,
             name: `${option.id}:${option.description || option.dscription || ''}`
-        }));
+        })).sort((a, b) => a.id - b.id);
         setItemIdChoices(itemIdArray);
         setOptionIdChoices(optionIdArray);
     }, []);
