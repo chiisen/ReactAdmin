@@ -60,3 +60,8 @@ VITE_API_BASE_URL=http://192.168.1.235:3005
 git push gitlab main
 ```
 
+## Docker
+```bash
+docker-compose up --build
+```
+
