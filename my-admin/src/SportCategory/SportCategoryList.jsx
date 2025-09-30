@@ -5,6 +5,7 @@ import { useListContext, useDataProvider } from 'react-admin';
 import { exportWithBOM } from '../utils/exportWithBOM'; // Adjust the path as needed
 import GetAppIcon from '@mui/icons-material/GetApp';
 import Button from '@mui/material/Button';
+import Tooltip from '@mui/material/Tooltip';
 
 
 import { useEffect, useState } from 'react';
@@ -239,27 +240,29 @@ excel_sort_order: ${log.excel_sort_order}
 
     return (
         <>
-            <Button
-                startIcon={<GetAppIcon />}
-                variant="text"
-                color="inherit"
-                size="small"
-                sx={{
-                    fontFamily: 'inherit',
-                    fontSize: '0.8125rem',
-                    textTransform: 'none',
-                    color: 'primary.main',
-                    backgroundColor: 'transparent',
-                    boxShadow: 'none',
-                    '&:hover': {
-                        backgroundColor: 'action.hover',
+            <Tooltip title="匯入 Excel 檔案，檢查檔案與資料庫的設定差異">
+                <Button
+                    startIcon={<GetAppIcon />}
+                    variant="text"
+                    color="inherit"
+                    size="small"
+                    sx={{
+                        fontFamily: 'inherit',
+                        fontSize: '0.8125rem',
+                        textTransform: 'none',
+                        color: 'primary.main',
+                        backgroundColor: 'transparent',
                         boxShadow: 'none',
-                    },
-                }}
-                onClick={() => inputRef.current.click()}
-            >
-                Import Excel
-            </Button>
+                        '&:hover': {
+                            backgroundColor: 'action.hover',
+                            boxShadow: 'none',
+                        },
+                    }}
+                    onClick={() => inputRef.current.click()}
+                >
+                    Import Excel
+                </Button>
+            </Tooltip>
             <input
                 type="file"
                 accept=".xlsx,.xls"

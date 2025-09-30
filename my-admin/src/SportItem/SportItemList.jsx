@@ -5,6 +5,7 @@ import { useListContext, useDataProvider } from 'react-admin';
 import { exportWithBOM } from '../utils/exportWithBOM'; // Adjust the path as needed
 import GetAppIcon from '@mui/icons-material/GetApp';
 import Button from '@mui/material/Button';
+import Tooltip from '@mui/material/Tooltip';
 import * as XLSX from 'xlsx';
 
 
@@ -59,11 +60,6 @@ const CustomExportButton = ({ columns }) => {
     );
 };
 
-/**
- * 自定義列表頁面頂部按鈕
- * @param {*} param0 
- * @returns 
- */
 /**
  * 匯入 Excel 按鈕元件
  * Excel 格式參照(存成 .xlsx 格式): https://docs.google.com/spreadsheets/d/1eQyNQjjV27I1-z6HhP7IL7tb8-h-QsSqxwCSjmMvC80/edit?gid=0#gid=0
@@ -172,27 +168,29 @@ const ImportExcelButton = () => {
 
     return (
         <>
-            <Button
-                startIcon={<GetAppIcon />}
-                variant="text"
-                color="inherit"
-                size="small"
-                sx={{
-                    fontFamily: 'inherit',
-                    fontSize: '0.8125rem',
-                    textTransform: 'none',
-                    color: 'primary.main',
-                    backgroundColor: 'transparent',
-                    boxShadow: 'none',
-                    '&:hover': {
-                        backgroundColor: 'action.hover',
+            <Tooltip title="匯入 Excel 檔案，檢查檔案與資料庫的設定差異">
+                <Button
+                    startIcon={<GetAppIcon />}
+                    variant="text"
+                    color="inherit"
+                    size="small"
+                    sx={{
+                        fontFamily: 'inherit',
+                        fontSize: '0.8125rem',
+                        textTransform: 'none',
+                        color: 'primary.main',
+                        backgroundColor: 'transparent',
                         boxShadow: 'none',
-                    },
-                }}
-                onClick={() => inputRef.current.click()}
-            >
-                Import Excel
-            </Button>
+                        '&:hover': {
+                            backgroundColor: 'action.hover',
+                            boxShadow: 'none',
+                        },
+                    }}
+                    onClick={() => inputRef.current.click()}
+                >
+                    Import Excel
+                </Button>
+            </Tooltip>
             <input
                 type="file"
                 accept=".xlsx,.xls"
