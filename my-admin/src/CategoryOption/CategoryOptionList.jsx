@@ -109,7 +109,7 @@ const CategoryOptionList = () => {
                 actions={<ListActions columns={columns} />}
                 pagination={<CustomPagination />}
             >
-                <DataTable className="center-header">
+                <DataTable className="center-header" actions={[]} bulkActionButtons={false}>
                     {columns}
                 </DataTable>
             </List>
