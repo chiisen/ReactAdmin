@@ -245,10 +245,7 @@ const ListContentWithLoading = ({ columns }) => {
                 timerRef.current = null;
             }
         } else {
-            // API 回來時，延遲 1 秒再隱藏 loading
-            timerRef.current = setTimeout(() => {
-                setShowLoading(false);
-            }, 1000);
+            setShowLoading(false);
         }
         return () => {
             if (timerRef.current) {
