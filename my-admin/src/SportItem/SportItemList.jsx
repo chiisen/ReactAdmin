@@ -12,7 +12,7 @@ import * as XLSX from 'xlsx';
 import { List, DataTable } from 'react-admin';
 import { ResourceMgr } from '../ResourceMgr';
 import { link_type_Choices } from './SportItemChoices';
-
+import CustomPagination from '../utils/CustomPagination';
 
 
 /**
@@ -230,15 +230,6 @@ const columns = [
     <DataTable.Col source="updated_at" key="updated_at" align="left" />,
     <DataTable.Col source="created_at" key="created_at" align="left" />,
 ];
-
-/**
- * 自定義分頁，每頁可選擇顯示數量
- * @param {*} props 
- * @returns 
- */
-const CustomPagination = props => (
-    <Pagination rowsPerPageOptions={[5, 10, 25, 50, 100, 500, 1000]} {...props} />
-);
 
 import { useEffect, useRef, useState } from 'react';
 const ListContentWithLoading = ({ columns }) => {

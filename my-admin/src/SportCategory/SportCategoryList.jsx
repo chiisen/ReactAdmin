@@ -1,5 +1,5 @@
 import React from 'react';
-import { CreateButton, TopToolbar, Pagination } from 'react-admin';
+import { CreateButton, TopToolbar } from 'react-admin';
 import { useListContext, useDataProvider } from 'react-admin';
 // Import or define exportWithBOM
 import { exportWithBOM } from '../utils/exportWithBOM'; // Adjust the path as needed
@@ -14,6 +14,7 @@ import { ResourceMgr } from '../ResourceMgr';
 
 
 import { localStorageMgr } from '../utils/localStorageMgr'
+import CustomPagination from '../utils/CustomPagination';
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
@@ -86,9 +87,11 @@ const ImportExcelButton = ({ categoryOptionList, sportItemList }) => {
         return data;
     };
 
-
-
-    // 解析 Excel 並比對差異
+    /**
+     * 解析 Excel 並比對差異
+     * @param {*} e 
+     * @returns 
+     */
     const handleImport = async (e) => {
         const file = e.target.files[0];
         if (!file) return;
@@ -288,7 +291,12 @@ const ListActions = ({ columns, categoryOptionList, sportItemList }) => (
     </TopToolbar>
 );
 
-
+/**
+ * 
+ * @param {*} sportItemList 
+ * @param {*} categoryOptionList 
+ * @returns 
+ */
 const getColumns = (sportItemList, categoryOptionList) => [
     <DataTable.Col source="id" align="right" />,
     <DataTable.Col source="item_id" label="item_id (表:sport_item)" align="left"
@@ -317,16 +325,6 @@ const getColumns = (sportItemList, categoryOptionList) => [
 ];
 
 /**
- * 自定義分頁，每頁可選擇顯示數量
- * @param {*} props 
- * @returns 
- */
-const CustomPagination = props => (
-    <Pagination rowsPerPageOptions={[5, 10, 25, 50, 100, 500, 1000]} {...props} />
-);
-
-
-/**
  * 頁面欄位顯示標籤
  * @returns 
  */
@@ -336,6 +334,16 @@ const SportCategoryList = () => {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
+        const lastCall = localStorage.getItem('sportCategoryLastApiCall');
+        if (lastCall && Date.now() - parseInt(lastCall) < 5 * 60 * 1000) {
+            // 五分鐘內，從 localStorage 獲取數據，避免重複呼叫 API
+            const sportItems = localStorageMgr.getItem(ResourceMgr.sportItem) || [];
+            const categoryOptions = localStorageMgr.getItem(ResourceMgr.categoryOption) || [];
+            setSportItemList(sportItems);
+            setCategoryOptionList(categoryOptions);
+            setLoading(false);
+            return;
+        }
 
         const fetchSportItems = fetch(`${API_BASE_URL}/${ResourceMgr.sportItem}/list`, {
             method: 'POST',
@@ -386,6 +394,8 @@ const SportCategoryList = () => {
             });
 
         Promise.all([fetchSportItems, fetchCategoryOptions]).finally(() => {
+            // 記錄 API 呼叫時間
+            localStorage.setItem('sportCategoryLastApiCall', Date.now().toString());
             // loading 最少顯示 1 秒
             setTimeout(() => {
                 setLoading(false);

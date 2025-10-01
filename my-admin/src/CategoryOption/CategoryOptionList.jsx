@@ -9,7 +9,7 @@ import Button from '@mui/material/Button';
 
 import { List, DataTable } from 'react-admin';
 import { ResourceMgr } from '../ResourceMgr';
-
+import CustomPagination from '../utils/CustomPagination';
 
 /**
  * 自定義匯出按鈕
@@ -83,14 +83,6 @@ const columns = [
     <DataTable.Col key="created_at" source="created_at" align="left" />,
 ];
 
-/**
- * 自定義分頁，每頁可選擇顯示數量
- * @param {*} props 
- * @returns 
- */
-const CustomPagination = props => (
-    <Pagination rowsPerPageOptions={[5, 10, 25, 50, 100, 500, 1000]} {...props} />
-);
 
 /**
  * 頁面欄位顯示標籤
