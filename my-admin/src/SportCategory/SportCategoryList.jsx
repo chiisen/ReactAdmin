@@ -396,10 +396,10 @@ const SportCategoryList = () => {
         Promise.all([fetchSportItems, fetchCategoryOptions]).finally(() => {
             // 記錄 API 呼叫時間
             localStorage.setItem('sportCategoryLastApiCall', Date.now().toString());
-            // loading 最少顯示 1 秒
+            // loading 最少顯示 0.001 秒
             setTimeout(() => {
                 setLoading(false);
-            }, 1000);
+            }, 1);
         });
     }, []);
 
