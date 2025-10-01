@@ -15,6 +15,10 @@ import { link_type_Choices } from './SportItemChoices';
 import CustomPagination from '../utils/CustomPagination';
 
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+import { localStorageMgr } from '../utils/localStorageMgr'
+
+
 /**
  * 自定義匯出按鈕
  * @param {*} param0 
@@ -216,10 +220,32 @@ const ListActions = ({ columns }) => (
     </TopToolbar>
 );
 
-const columns = [
+/**
+ * 
+ * @param {*} i18nTextList 
+ * @returns 
+ */
+const getColumns = (i18nTextList) => [
     <DataTable.Col source="id" key="id" align="right" />,
-    <DataTable.Col source="name_key" key="name_key" align="left" />,
-    <DataTable.Col source="description" key="description" align="left" />, 
+    <DataTable.Col source="name_key" key="name_key" align="left" />, 
+
+
+    <DataTable.Col key="I18nText" source="I18nText" label="I18nText (表:I18nText)" align="left"
+        render={record => {
+            let array = i18nTextList;
+            if (array && Array.isArray(array)) {
+                const found = array.find(item => item.key === record.name_key && item.lang === 'zh-TW');
+                return found ? `${found.text}` : record.name_key;
+            } else {
+                return record.name_key || '無資料';
+            }
+        }}
+    />,
+
+
+    <DataTable.Col source="description" key="description" align="left" />,
+
+
     <DataTable.Col source="link_type" key="link_type" align="left"
         render={record => {
             const found = link_type_Choices.find(choice => choice.id === String(record.link_type));
@@ -230,6 +256,7 @@ const columns = [
     <DataTable.Col source="updated_at" key="updated_at" align="left" />,
     <DataTable.Col source="created_at" key="created_at" align="left" />,
 ];
+
 
 import { useEffect, useRef, useState } from 'react';
 const ListContentWithLoading = ({ columns }) => {
@@ -285,25 +312,59 @@ const ListContentWithLoading = ({ columns }) => {
  * 頁面欄位顯示標籤
  * @returns 
  */
-const SportItemList = () => (
-    <>
-        <style>
-            {`
-                .center-header th {
-                    text-align: center !important;
-                }
-            `}
-        </style>
-        <List
-            resource={ResourceMgr.sportItem}
-            title="運動類型"
-            actions={<ListActions columns={columns} />}
-            pagination={<CustomPagination />}
-        >
-            <ListContentWithLoading columns={columns} />
-        </List>
-    </>
-);
+const SportItemList = () => {
+    const [i18nTextList, setI18nTextList] = useState([]);
+
+    useEffect(() => {
+        fetch(`${API_BASE_URL}/${ResourceMgr.i18nText}/list`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'appName': 'ReactAdmin'
+            },
+            body: JSON.stringify({
+                pagination: {
+                    page: 1,
+                    perPage: 1000,
+                },
+                filter: {
+                    lang: 'zh-TW'
+                },
+            })
+        })
+            .then(res => res.json())
+            .then(json => {
+                setI18nTextList(json.data || []);
+                localStorageMgr.setItem(ResourceMgr.i18nText, json.data || []); // 儲存到 localStorage
+            })
+            .catch(err => {
+                setI18nTextList([]);
+                console.error('API Fetch i18nText 錯誤', err);
+            });
+    }, []);
+
+    const columns = getColumns(i18nTextList);
+
+    return (
+        <>
+            <style>
+                {`
+                    .center-header th {
+                        text-align: center !important;
+                    }
+                `}
+            </style>
+            <List
+                resource={ResourceMgr.sportItem}
+                title="運動類型"
+                actions={<ListActions columns={columns} />}
+                pagination={<CustomPagination />}
+            >
+                <ListContentWithLoading columns={columns} />
+            </List>
+        </>
+    );
+};
 
 export default SportItemList;
 
