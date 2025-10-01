@@ -106,7 +106,7 @@ const CategoryGroupList = () => {
                 actions={<ListActions columns={columns} />}
                 pagination={<CustomPagination />}
             >
-                <DataTable className="center-header">
+                <DataTable className="center-header" bulkActionButtons={false}>
                     {columns}
                 </DataTable>
             </List>
