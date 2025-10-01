@@ -1,8 +1,8 @@
-import { Edit, SimpleForm, TextInput } from 'react-admin';
+import { Edit, SimpleForm, TextInput, Toolbar, SaveButton } from 'react-admin';
 
 const CategoryGroupEdit = (props) => (
     <Edit {...props}>
-        <SimpleForm>
+        <SimpleForm toolbar={<Toolbar><SaveButton /></Toolbar>}>
             <p>id 不能修改</p>
             <TextInput source="id" disabled alwaysOn /> {/* 設定屬性 alwaysOn 時 id 一定送出 */}
             <TextInput source="name_key" />
