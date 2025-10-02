@@ -120,7 +120,7 @@ const ImportExcelButton = () => {
 
                 const i18nText = localStorageMgr.getItem(ResourceMgr.i18nText);
                 apiRows.forEach(apiRow => {
-                    const found = i18nText.find(item => item.key === apiRow.name_key && item.lang === 'zh-TW');
+                    const found = i18nText.find(i18n => i18n.key === apiRow.name_key && i18n.lang === 'zh-TW');
                     if (found) {
                         apiRow.i18nText = found.text;
                     } else {
