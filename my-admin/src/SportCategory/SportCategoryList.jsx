@@ -87,6 +87,16 @@ const ImportExcelButton = ({ categoryOptionList, sportItemList }) => {
         return data;
     };
 
+    // 更新 API 資料
+    const updateApiData = async () => {
+        const { data } = await dataProvider.updateMany(resource, {
+            pagination: { page: 1, perPage: 10000 },
+            sort: { field: 'id', order: 'ASC' },
+            filter: {},
+        });
+        return data;
+    };
+
     /**
      * 解析 Excel 並比對差異
      * @param {*} e 
@@ -141,13 +151,13 @@ const ImportExcelButton = ({ categoryOptionList, sportItemList }) => {
 
                 const excelOptionIdNum = categoryOptionList.find(co => co.i18nText === excelOptionIdRawTrimmed)?.id;
                 if (excelOptionIdNum === undefined) {
-                    console.warn(`找不到對應的 Category Option 描述: "${excelOptionIdRaw}"，請確認資料是否正確`);
-                    return;
+                    alert(`找不到對應的 Category Option 描述: "${excelOptionIdRawTrimmed}"，請確認資料是否正確`);
+                    throw new Error(`找不到對應的 Category Option 描述: "${excelOptionIdRawTrimmed}"，請確認資料是否正確`);
                 }
                 const apiOptionIdDescription = categoryOptionList.find(si => si.id === excelOptionIdNum)?.i18nText || '無描述';
                 if (apiOptionIdDescription === undefined) {
-                    console.warn(`找不到對應的 Category Option ID: "${excelOptionIdNum}"，請確認資料是否正確`);
-                    return;
+                    alert(`找不到對應的 Category Option ID: "${excelOptionIdNum}"，請確認資料是否正確`);
+                    throw new Error(`找不到對應的 Category Option ID: "${excelOptionIdNum}"，請確認資料是否正確`);
                 }
 
                 // excelItemIdRaw 只取數字
@@ -236,6 +246,10 @@ excel_option_id: ${log.excel_option_id}(${log.excel_option_id_description}),
 api_sort_order: ${log.api_sort_order},
 excel_sort_order: ${log.excel_sort_order}
 \n`;
+
+                // 更新 API 資料
+                //updateApiData();
+                
                 });
             }
             if (excelNewLogs.length > 0) {
@@ -248,8 +262,7 @@ excel_sort_order: ${log.excel_sort_order}
 \n`;
                 });
 
-                // 呼叫 Update API
-
+                // 呼叫 Create API
 
             }
             alert(msg);
@@ -370,7 +383,8 @@ const SportCategoryList = () => {
 
     useEffect(() => {
         const lastCall = localStorage.getItem('sportCategoryLastApiCall');
-        if (lastCall && Date.now() - parseInt(lastCall) < 5 * 60 * 1000) {
+        const delayTime = 1;// 5 * 60 * 1000
+        if (lastCall && Date.now() - parseInt(lastCall) < delayTime) {
             // 五分鐘內，從 localStorage 獲取數據，避免重複呼叫 API
             const sportItems = localStorageMgr.getItem(ResourceMgr.sportItem) || [];
             const categoryOptions = localStorageMgr.getItem(ResourceMgr.categoryOption) || [];
@@ -448,13 +462,13 @@ const SportCategoryList = () => {
         })
             .then(res => res.json())
             .then(json => {
-                setCategoryOptionList(json.data || []);
+                setI18nTextList(json.data || []);
 
                 localStorageMgr.setItem(ResourceMgr.i18nText, json.data || []); // 儲存到 localStorage
             })
             .catch(err => {
-                setCategoryOptionList([]);
-                console.error('API Fetch category options 錯誤', err);
+                setI18nTextList([]);
+                console.error('API Fetch i18n texts 錯誤', err);
             });
 
         Promise.all([fetchSportItems, fetchCategoryOptions, fetchi18nTexts]).finally(() => {
@@ -468,10 +482,10 @@ const SportCategoryList = () => {
 
     }, []);
 
-    
+
     const i18nText = localStorageMgr.getItem(ResourceMgr.i18nText);
     categoryOptionList.forEach(row => {
-            const found = i18nText.find(item => item.key === row.name_key && item.lang === 'zh-TW');
+            const found = i18nText.find(i18n => i18n.key === row.name_key && i18n.lang === 'zh-TW');
             if (found) {
                 row.i18nText = found.text;
             } else {
@@ -480,7 +494,7 @@ const SportCategoryList = () => {
         });
 
     sportItemList.forEach(row => {
-            const found = i18nText.find(item => item.key === row.name_key && item.lang === 'zh-TW');
+            const found = i18nText.find(i18n => i18n.key === row.name_key && i18n.lang === 'zh-TW');
             if (found) {
                 row.i18nText = found.text;
             } else {
