@@ -106,20 +106,38 @@ const ImportExcelButton = () => {
             // 依需求比對 zh-TW繁體中文 與 description
             // excelRows: { 'zh-TW繁體中文', 'Link Type', ... }
             // apiRows: { id, description, link_type, ... }
+            
+            // Excel 欄位名稱
+            const LinkTypeName = 'Link Type';
+            const SportItemName = 'zh-TW繁體中文';
+
             const diffLogs = [];
             const excelNewLogs = [];
             excelRows.forEach(excelRow => {
-                const excelLinkTypeRaw = excelRow['Link Type'];
-                if (!excelRow['zh-TW繁體中文'] || excelLinkTypeRaw === undefined) return;
+                const excelLinkTypeRaw = excelRow[LinkTypeName];
+                if (!excelRow[SportItemName] || excelLinkTypeRaw === undefined) return;
+
+
+                const i18nText = localStorageMgr.getItem(ResourceMgr.i18nText);
+                apiRows.forEach(apiRow => {
+                    const found = i18nText.find(item => item.key === apiRow.name_key && item.lang === 'zh-TW');
+                    if (found) {
+                        apiRow.i18nText = found.text;
+                    } else {
+                        apiRow.i18nText = apiRow.name_key || '無資料';
+                    }
+                });
+
+
                 // 找到 description 一樣的 apiRow
-                const apiRow = apiRows.find(a => a.description === excelRow['zh-TW繁體中文']);
+                const apiRow = apiRows.find(a => a.i18nText === excelRow[SportItemName]);
                 if (apiRow) {
                     // excel_link_type 只取冒號前的數字
                     const excelLinkTypeNum = String(excelLinkTypeRaw).split(':')[0].trim();
                     if (String(excelLinkTypeNum) !== String(apiRow.link_type)) {
                         diffLogs.push({
                             id: apiRow.id,
-                            description: apiRow.description,
+                            i18nText: apiRow.i18nText,
                             link_type: apiRow.link_type,
                             excel_link_type: excelLinkTypeRaw
                         });
@@ -127,7 +145,7 @@ const ImportExcelButton = () => {
                 } else {
                     // Excel 有但 API 沒有，視為新增
                     excelNewLogs.push({
-                        excel_description: excelRow['zh-TW繁體中文'],
+                        excel_i18nText: excelRow[SportItemName],
                         excel_link_type: excelLinkTypeRaw
                     });
                 }
@@ -138,26 +156,26 @@ const ImportExcelButton = () => {
             } else {
                 msg += 'Link Type 與 link_type 不一致如下：\n';
                 diffLogs.forEach(log => {
-                    msg += `id: ${log.id}, description: ${log.description}, excel_link_type: ${log.excel_link_type}, api_link_type: ${log.link_type}\n`;
+                    msg += `id: ${log.id}, i18nText: ${log.i18nText}, excel_link_type: ${log.excel_link_type}, api_link_type: ${log.link_type}\n`;
                 });
             }
             if (excelNewLogs.length > 0) {
                 msg += '\nExcel 新增資料如下：\n';
                 excelNewLogs.forEach(log => {
-                    msg += `excel_description: ${log.excel_description}, excel_link_type: ${log.excel_link_type}\n`;
+                    msg += `excel_i18nText: ${log.excel_i18nText}, excel_link_type: ${log.excel_link_type}\n`;
                 });
             }
             alert(msg);
             // 也可用 console.log(diffLogs, excelNewLogs) 輸出詳細資料
-            console.log('Link Type 差異:', diffLogs);
-            console.log('Excel 新增資料:', excelNewLogs);
+            //console.log('Link Type 差異:', diffLogs);
+            //console.log('Excel 新增資料:', excelNewLogs);
 
             // 產生 diff.txt 並自動下載
             const blob = new Blob([msg], { type: 'text/plain;charset=utf-8' });
             const url = window.URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = 'diff.txt';
+            a.download = 'sport_item_diff.txt';
             document.body.appendChild(a);
             a.click();
             setTimeout(() => {
