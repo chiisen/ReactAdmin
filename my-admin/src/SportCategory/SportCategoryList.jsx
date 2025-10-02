@@ -111,24 +111,50 @@ const ImportExcelButton = ({ categoryOptionList, sportItemList }) => {
             // 取得 API 資料
             const apiRows = await fetchApiData();
 
-            // 依需求比對 zh-TW繁體中文 與 按種類分類
-            // excelRows: { 'zh-TW繁體中文', '按種類分類', ... }
+            // 依需求比對 zh-TW繁體中文 與 Category Option
+            // excelRows: { 'zh-TW繁體中文', 'Category Option', ... }
             // apiRows: { id, item_id, option_id, ... }
             const diffLogs = [];
             const excelNewLogs = [];
+
+            // Excel 欄位名稱
+            const CategoryOptionName = 'Category Option';
+            const SportItemName = 'zh-TW繁體中文';
+
             excelRows.forEach(excelRow => {
-                const excelOptionIdRaw = excelRow['按種類分類'];
-                const excelItemIdRaw = excelRow['zh-TW繁體中文'];
-                if (!excelOptionIdRaw || excelOptionIdRaw === undefined || !excelItemIdRaw || excelItemIdRaw === undefined) return;
+                const excelOptionIdRaw = excelRow[CategoryOptionName];
+                const excelItemIdRaw = excelRow[SportItemName];
+                if (!excelOptionIdRaw || excelOptionIdRaw === undefined) {
+                    //console.warn(`Option: "${CategoryOptionName}" 跳過空白列或缺少必要欄位的列:`, excelRow);
+                    //CategoryOptionName 欄位空白就跳過
+                    return;
+                }
+                if (!excelItemIdRaw || excelItemIdRaw === undefined) {
+                    console.warn(`Item: "${SportItemName}" 跳過空白列或缺少必要欄位的列:`, excelRow);
+                    return;
+                }
 
                 const excelSortOrder = excelRow['排序Sort order'] || 0;
 
-                // excelOptionIdRaw 只取數字
-                const excelOptionIdNum = categoryOptionList.find(co => co.description === excelOptionIdRaw)?.id;
-                const apiOptionIdDescription = categoryOptionList.find(si => si.id === excelOptionIdNum)?.description || '無描述';
+                // excelOptionIdRaw 只取描述部分
+                const excelOptionIdRawTrimmed = excelOptionIdRaw.trim().split(':')[1]?.trim() || '';
+
+                const excelOptionIdNum = categoryOptionList.find(co => co.i18nText === excelOptionIdRawTrimmed)?.id;
+                if (excelOptionIdNum === undefined) {
+                    console.warn(`找不到對應的 Category Option 描述: "${excelOptionIdRaw}"，請確認資料是否正確`);
+                    return;
+                }
+                const apiOptionIdDescription = categoryOptionList.find(si => si.id === excelOptionIdNum)?.i18nText || '無描述';
+                if (apiOptionIdDescription === undefined) {
+                    console.warn(`找不到對應的 Category Option ID: "${excelOptionIdNum}"，請確認資料是否正確`);
+                    return;
+                }
 
                 // excelItemIdRaw 只取數字
-                const excelItemIdNum = sportItemList.find(si => si.description === excelItemIdRaw)?.id;
+                const excelItemIdNum = sportItemList.find(si => si.i18nText === excelItemIdRaw)?.id;
+                if (excelItemIdNum === undefined) {
+                    //console.warn(`找不到對應的 Sport Item 描述: "${excelItemIdRaw}"，請確認資料是否正確`);
+                }
 
                 let deactivateStatus = '';
                 if (excelRow['停用Deactivate']?.trim() === 'Y') {
@@ -183,10 +209,14 @@ const ImportExcelButton = ({ categoryOptionList, sportItemList }) => {
                         return;
                     }
                     else {
+                        let itemId = excelItemIdNum;
+                        if (itemId === undefined) {
+                            itemId = "🚫未建立🚫";
+                        }
                         excelNewLogs.push({
                             excel_option_id: excelOptionIdNum,
                             excel_option_id_description: excelOptionIdRaw,
-                            excel_item_id: excelItemIdNum,
+                            excel_item_id: itemId,
                             excel_item_id_description: excelItemIdRaw,
                             excel_sort_order: excelSortOrder,
                         });
@@ -217,18 +247,22 @@ excel_option_id: ${log.excel_option_id}(${log.excel_option_id_description}),
 excel_sort_order: ${log.excel_sort_order}
 \n`;
                 });
+
+                // 呼叫 Update API
+
+
             }
             alert(msg);
             // 也可用 console.log(diffLogs, excelNewLogs) 輸出詳細資料
-            console.log('item_id && option_id 差異:', diffLogs);
-            console.log('Excel 新增資料:', excelNewLogs);
+            //console.log('item_id && option_id 差異:', diffLogs);
+            //console.log('Excel 新增資料:', excelNewLogs);
 
             // 產生 diff.txt 並自動下載
             const blob = new Blob([msg], { type: 'text/plain;charset=utf-8' });
             const url = window.URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = 'diff.txt';
+            a.download = 'sport_category_diff.txt';
             document.body.appendChild(a);
             a.click();
             setTimeout(() => {
@@ -304,7 +338,7 @@ const getColumns = (sportItemList, categoryOptionList) => [
             let array = sportItemList;
             if (array && Array.isArray(array)) {
                 const found = array.find(item => item.id === record.item_id);
-                return found ? `${found.id} (${found.dscription || found.description || ''})` : record.item_id;
+                return found ? `${found.id} (${found.i18nText || found.i18nText || ''})` : record.item_id;
             } else {
                 return record.item_id;
             }
@@ -314,7 +348,7 @@ const getColumns = (sportItemList, categoryOptionList) => [
         let array = categoryOptionList;
         if (array && Array.isArray(array)) {
             const found = array.find(item => item.id === record.option_id);
-            return found ? `${found.id} (${found.dscription || found.description || ''})` : record.option_id;
+            return found ? `${found.id} (${found.i18nText || found.i18nText || ''})` : record.option_id;
         } else {
             return record.option_id;
         }
@@ -331,6 +365,7 @@ const getColumns = (sportItemList, categoryOptionList) => [
 const SportCategoryList = () => {
     const [sportItemList, setSportItemList] = useState([]);
     const [categoryOptionList, setCategoryOptionList] = useState([]);
+    const [i18nTextList, setI18nTextList] = useState([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
@@ -339,8 +374,10 @@ const SportCategoryList = () => {
             // 五分鐘內，從 localStorage 獲取數據，避免重複呼叫 API
             const sportItems = localStorageMgr.getItem(ResourceMgr.sportItem) || [];
             const categoryOptions = localStorageMgr.getItem(ResourceMgr.categoryOption) || [];
+            const i18nTexts = localStorageMgr.getItem(ResourceMgr.i18nText) || [];
             setSportItemList(sportItems);
             setCategoryOptionList(categoryOptions);
+            setI18nTextList(i18nTexts);
             setLoading(false);
             return;
         }
@@ -393,7 +430,34 @@ const SportCategoryList = () => {
                 console.error('API Fetch category options 錯誤', err);
             });
 
-        Promise.all([fetchSportItems, fetchCategoryOptions]).finally(() => {
+        const fetchi18nTexts = fetch(`${API_BASE_URL}/${ResourceMgr.i18nText}/list`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'appName': 'ReactAdmin'
+            },
+            body: JSON.stringify({
+                pagination: {
+                    page: 1,
+                    perPage: 1000,
+                },
+                filter: {
+                    lang: 'zh-TW'
+                },
+            })
+        })
+            .then(res => res.json())
+            .then(json => {
+                setCategoryOptionList(json.data || []);
+
+                localStorageMgr.setItem(ResourceMgr.i18nText, json.data || []); // 儲存到 localStorage
+            })
+            .catch(err => {
+                setCategoryOptionList([]);
+                console.error('API Fetch category options 錯誤', err);
+            });
+
+        Promise.all([fetchSportItems, fetchCategoryOptions, fetchi18nTexts]).finally(() => {
             // 記錄 API 呼叫時間
             localStorage.setItem('sportCategoryLastApiCall', Date.now().toString());
             // loading 最少顯示 0.001 秒
@@ -401,12 +465,31 @@ const SportCategoryList = () => {
                 setLoading(false);
             }, 1);
         });
+
     }, []);
 
+    
+    const i18nText = localStorageMgr.getItem(ResourceMgr.i18nText);
+    categoryOptionList.forEach(row => {
+            const found = i18nText.find(item => item.key === row.name_key && item.lang === 'zh-TW');
+            if (found) {
+                row.i18nText = found.text;
+            } else {
+                row.i18nText = row.name_key || '無資料';
+            }
+        });
+
+    sportItemList.forEach(row => {
+            const found = i18nText.find(item => item.key === row.name_key && item.lang === 'zh-TW');
+            if (found) {
+                row.i18nText = found.text;
+            } else {
+                row.i18nText = row.name_key || '無資料';
+            }
+        });
 
 
-
-    const columns = getColumns(sportItemList, categoryOptionList);
+    const columns = getColumns(sportItemList, categoryOptionList, i18nTextList);
 
     // 新增一個包裝元件，根據 loading 狀態顯示提示
     const ListContentWithLoading = ({ columns }) => {
@@ -429,7 +512,7 @@ const SportCategoryList = () => {
             <List
                 resource={ResourceMgr.sportCategory}
                 title="運動項目"
-                actions={<ListActions columns={columns} categoryOptionList={categoryOptionList} sportItemList={sportItemList} />}
+                actions={<ListActions columns={columns} categoryOptionList={categoryOptionList} sportItemList={sportItemList} i18nTextList={i18nTextList} />}
                 pagination={<CustomPagination />}
             >
                 {loading ? (
