@@ -18,6 +18,8 @@ import CustomPagination from '../utils/CustomPagination';
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 import { localStorageMgr } from '../utils/localStorageMgr'
 
+import { addI18nText } from '../utils/I18nText';
+
 
 /**
  * 自定義匯出按鈕
@@ -106,7 +108,7 @@ const ImportExcelButton = () => {
             // 依需求比對 zh-TW繁體中文 與 description
             // excelRows: { 'zh-TW繁體中文', 'Link Type', ... }
             // apiRows: { id, description, link_type, ... }
-            
+
             // Excel 欄位名稱
             const LinkTypeName = 'Link Type';
             const SportItemName = 'zh-TW繁體中文';
@@ -119,15 +121,8 @@ const ImportExcelButton = () => {
 
 
                 const i18nText = localStorageMgr.getItem(ResourceMgr.i18nText);
-                apiRows.forEach(apiRow => {
-                    const found = i18nText.find(i18n => i18n.key === apiRow.name_key && i18n.lang === 'zh-TW');
-                    if (found) {
-                        apiRow.i18nText = found.text;
-                    } else {
-                        apiRow.i18nText = apiRow.name_key || '無資料';
-                    }
-                });
 
+                addI18nText(apiRows, i18nText);
 
                 // 找到 description 一樣的 apiRow
                 const apiRow = apiRows.find(a => a.i18nText === excelRow[SportItemName]);
@@ -245,7 +240,7 @@ const ListActions = ({ columns }) => (
  */
 const getColumns = (i18nTextList) => [
     <DataTable.Col source="id" key="id" align="right" />,
-    <DataTable.Col source="name_key" key="name_key" align="left" />, 
+    <DataTable.Col source="name_key" key="name_key" align="left" />,
 
 
     <DataTable.Col key="I18nText" source="I18nText" label="I18nText (表:I18nText)" align="left"

@@ -16,6 +16,8 @@ import { ResourceMgr } from '../ResourceMgr';
 import { localStorageMgr } from '../utils/localStorageMgr'
 import CustomPagination from '../utils/CustomPagination';
 
+import { addI18nText } from '../utils/I18nText';
+
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 import * as XLSX from 'xlsx';
@@ -498,27 +500,14 @@ const SportCategoryList = () => {
             }, 1);
         });
 
+        // 在數據加載後添加 i18nText
+        Promise.all([fetchSportItems, fetchCategoryOptions, fetchi18nTexts]).then(() => {
+            const i18nText = localStorageMgr.getItem(ResourceMgr.i18nText);
+            setCategoryOptionList(prev => addI18nText(prev, i18nText));
+            setSportItemList(prev => addI18nText(prev, i18nText));
+        });
+
     }, []);
-
-
-    const i18nText = localStorageMgr.getItem(ResourceMgr.i18nText);
-    categoryOptionList.forEach(row => {
-        const found = i18nText.find(i18n => i18n.key === row.name_key && i18n.lang === 'zh-TW');
-        if (found) {
-            row.i18nText = found.text;
-        } else {
-            row.i18nText = row.name_key || '無資料';
-        }
-    });
-
-    sportItemList.forEach(row => {
-        const found = i18nText.find(i18n => i18n.key === row.name_key && i18n.lang === 'zh-TW');
-        if (found) {
-            row.i18nText = found.text;
-        } else {
-            row.i18nText = row.name_key || '無資料';
-        }
-    });
 
 
     const columns = getColumns(sportItemList, categoryOptionList, i18nTextList);
