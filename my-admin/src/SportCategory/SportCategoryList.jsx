@@ -87,14 +87,30 @@ const ImportExcelButton = ({ categoryOptionList, sportItemList }) => {
         return data;
     };
 
-    // 更新 API 資料
-    const updateApiData = async () => {
-        const { data } = await dataProvider.updateMany(resource, {
-            pagination: { page: 1, perPage: 10000 },
-            sort: { field: 'id', order: 'ASC' },
-            filter: {},
-        });
-        return data;
+    /**
+     * 更新 API 資料
+     * @param {*} diffLogs 
+     */
+    const updateApiData = async (diffLogs) => {
+        await fetch(`${API_BASE_URL}/${ResourceMgr.sportCategory}/updateMany`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'appName': 'ReactAdmin'
+            },
+            body: JSON.stringify({
+                ids: diffLogs, // 這裡假設 diffLogs 有 id 欄位
+            })
+        })
+            .then(res => res.json())
+            .then(json => {
+
+                console.log('API 更新結果', json);
+            })
+            .catch(err => {
+
+                console.error('API Fetch sportCategory 錯誤', err);
+            });
     };
 
     /**
@@ -185,6 +201,7 @@ const ImportExcelButton = ({ categoryOptionList, sportItemList }) => {
                         else {
                             // item_id 一樣，但 option_id 不一樣，視為差異
                             diffLogs.push({
+                                api_id: apiRow_item_id.id,
                                 api_option_id: apiRow_item_id.option_id,
                                 api_option_id_description: apiOptionIdDescription,
                                 excel_option_id: excelOptionIdNum,
@@ -201,6 +218,7 @@ const ImportExcelButton = ({ categoryOptionList, sportItemList }) => {
                         if (deactivateStatus === '[❌停用❌] ') {
                             // 如果 Excel 標記為停用，但 API 資料沒有停用，則視為差異
                             diffLogs.push({
+                                api_id: apiRow.id,
                                 api_option_id: apiRow.option_id,
                                 api_option_id_description: apiOptionIdDescription,
                                 excel_option_id: excelOptionIdNum,
@@ -237,28 +255,28 @@ const ImportExcelButton = ({ categoryOptionList, sportItemList }) => {
             if (diffLogs.length === 0) {
                 msg += '所有 option_id 與 item_id 都一致\n';
             } else {
-                msg += 'option_id 與 item_id 不一致如下：\n';
+                msg += 'option_id 與 item_id 不一致如下(已修正)：\n';
                 diffLogs.forEach(log => {
                     msg += `
-excel_item_id: ${log.excel_item_id}(${log.excel_item_id_description}), 
-api_option_id: ${log.api_option_id}(${log.api_option_id_description}), 
-excel_option_id: ${log.excel_option_id}(${log.excel_option_id_description}), 
-api_sort_order: ${log.api_sort_order},
-excel_sort_order: ${log.excel_sort_order}
+api| id: ${log.api_id},
+excel| item_id: ${log.excel_item_id}(${log.excel_item_id_description}), 
+api| option_id: ${log.api_option_id}(${log.api_option_id_description}), 
+excel| option_id: ${log.excel_option_id}(${log.excel_option_id_description}), 
+api| sort_order: ${log.api_sort_order},
+excel| sort_order: ${log.excel_sort_order}
 \n`;
+                });
 
                 // 更新 API 資料
-                //updateApiData();
-                
-                });
+                updateApiData(diffLogs);
             }
             if (excelNewLogs.length > 0) {
                 msg += '\nExcel 新增資料如下：\n';
                 excelNewLogs.forEach(log => {
                     msg += `
-excel_item_id: ${log.excel_item_id}(${log.excel_item_id_description}), 
-excel_option_id: ${log.excel_option_id}(${log.excel_option_id_description}), 
-excel_sort_order: ${log.excel_sort_order}
+excel| item_id: ${log.excel_item_id}(${log.excel_item_id_description}), 
+excel| option_id: ${log.excel_option_id}(${log.excel_option_id_description}), 
+excel| sort_order: ${log.excel_sort_order}
 \n`;
                 });
 
@@ -485,22 +503,22 @@ const SportCategoryList = () => {
 
     const i18nText = localStorageMgr.getItem(ResourceMgr.i18nText);
     categoryOptionList.forEach(row => {
-            const found = i18nText.find(i18n => i18n.key === row.name_key && i18n.lang === 'zh-TW');
-            if (found) {
-                row.i18nText = found.text;
-            } else {
-                row.i18nText = row.name_key || '無資料';
-            }
-        });
+        const found = i18nText.find(i18n => i18n.key === row.name_key && i18n.lang === 'zh-TW');
+        if (found) {
+            row.i18nText = found.text;
+        } else {
+            row.i18nText = row.name_key || '無資料';
+        }
+    });
 
     sportItemList.forEach(row => {
-            const found = i18nText.find(i18n => i18n.key === row.name_key && i18n.lang === 'zh-TW');
-            if (found) {
-                row.i18nText = found.text;
-            } else {
-                row.i18nText = row.name_key || '無資料';
-            }
-        });
+        const found = i18nText.find(i18n => i18n.key === row.name_key && i18n.lang === 'zh-TW');
+        if (found) {
+            row.i18nText = found.text;
+        } else {
+            row.i18nText = row.name_key || '無資料';
+        }
+    });
 
 
     const columns = getColumns(sportItemList, categoryOptionList, i18nTextList);
